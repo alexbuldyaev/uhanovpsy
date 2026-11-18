@@ -89,7 +89,8 @@ p { margin: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; padding-block: 8px; }
 .deck { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 16px; animation: rise .35s ease both; scroll-margin-top: calc(78px + env(safe-area-inset-top, 0px)); }
 .deck .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
-.deck .hint-top { font-size: 13px; color: var(--muted); }
+.deck .hint-top { font-size: 15px; line-height: 1.45; color: #4a504c; }
+.q .lead { display: block; color: #4a504c; margin-bottom: 6px; }
 .bar { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
 .bar > div { height: 100%; background: var(--pine); transition: width .25s ease; }
 .q { font-family: var(--serif); font-size: 25px; line-height: 1.3; min-height: 2.6em; font-variant-numeric: lining-nums; }
@@ -474,8 +475,8 @@ const STAGES = [
   { id: "char", title: "Характер", queue: charQueue, hint: "Насколько это про вас?" },
   { id: "att", title: "Отношения", queue: attQueue, hint: "Как вы обычно чувствуете себя с близкими людьми?" },
   { id: "lt", title: "Сценарии", queue: ltQueue, hint: "Насколько это верно для вас — сейчас или в прошлом?" },
-  { id: "res", title: "Ресурс", queue: resQueue, hint: "Последние две недели…" },
-  { id: "state", title: "Состояние", queue: stateQueue, hint: "Как часто за последние две недели вас беспокоило…" },
+  { id: "res", title: "Ресурс", queue: resQueue, hint: "Последние две недели…", lead: true },
+  { id: "state", title: "Состояние", queue: stateQueue, hint: "Как часто за последние две недели вас беспокоило…", lead: true },
 ];
 
 /* ============ Подсчёт ============ */
@@ -670,12 +671,15 @@ function ask(st, q, label, frac, pre, lead) {
     } else {
       body = `<div class="grid2">${FREQ.map((l, v) => `<button class="opt ${sel(v)}" data-v="${v}">${l}</button>`).join("")}</div>`;
     }
+    // Начало вопроса, без которого он не читается, — тем же шрифтом, что и сам вопрос.
+    const leadIn = q.scale === "itt" ? "Как часто в последнее время…" : st.lead ? st.hint : null;
     deck.innerHTML = `<div class="deck">
       <div class="top"><span>${["I","II","III","IV","V"][S.stage]} · ${esc(st.title)} · ${esc(label)}</span>
         ${S.hist[st.id].length ? '<button class="link" id="back" style="padding:0">← назад</button>' : ""}</div>
       <div class="bar"><div style="width:${(frac * 100).toFixed(1)}%"></div></div>
-      <div class="hint-top">${esc(q.scale === "itt" ? "Как часто в последнее время…" : st.hint)}</div>
-      <div class="q">${esc(q.text)}</div>
+      ${leadIn
+        ? `<div class="q"><span class="lead">${esc(leadIn)}</span>${esc(q.text)}</div>`
+        : `<div class="hint-top">${esc(st.hint)}</div><div class="q">${esc(q.text)}</div>`}
       ${body}
     </div>`;
     const card = deck.firstElementChild;
