@@ -695,14 +695,16 @@ function ask(st, q, label, frac, pre, lead) {
       body = `<div class="grid2">${FREQ.map((l, v) => `<button class="opt ${sel(v)}" data-v="${v}">${l}</button>`).join("")}</div>`;
     }
     // Начало вопроса, без которого он не читается, — тем же шрифтом, что и сам вопрос.
+    // Утверждения показываем без точки в конце — так они читаются естественнее.
+    const qText = q.text.replace(/\.\s*$/, "");
     const leadIn = q.scale === "itt" ? "Как часто в последнее время…" : st.lead ? st.hint : null;
     deck.innerHTML = `<div class="deck">
       <div class="top"><span>${["I","II","III","IV","V"][S.stage]} · ${esc(st.title)} · ${esc(label)}</span>
         ${S.hist[st.id].length ? '<button class="link" id="back" style="padding:0">← назад</button>' : ""}</div>
       <div class="bar"><div style="width:${(frac * 100).toFixed(1)}%"></div></div>
       ${leadIn
-        ? `<div class="q"><span class="lead">${esc(leadIn)}</span>${esc(q.text)}</div>`
-        : `<div class="hint-top">${esc(st.hint)}</div><div class="q">${esc(q.text)}</div>`}
+        ? `<div class="q"><span class="lead">${esc(leadIn)}</span>${esc(qText)}</div>`
+        : `<div class="hint-top">${esc(st.hint)}</div><div class="q">${esc(qText)}</div>`}
       ${body}
     </div>`;
     const card = deck.firstElementChild;
