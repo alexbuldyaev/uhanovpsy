@@ -158,6 +158,13 @@ art = extract_images(art, "article")
 art = add_metrika(art, webvisor=False)  # ответы мини-теста не записываем
 (site / "izbegayushchiy-tip.html").write_text(art, encoding="utf-8")
 
+# Старые адреса → новые (ссылки из ранних версий файлов)
+for old, new in {"pyat-granej.html": "chekap.html", "o-viktore.html": "index.html"}.items():
+    (site / old).write_text(f'<!doctype html><meta charset="utf-8"><title>Переадресация</title>'
+                            f'<meta http-equiv="refresh" content="0; url={new}"><link rel="canonical" href="{SITE_URL}{new}">'
+                            f'<script>location.replace("{new}" + location.search + location.hash)</script>'
+                            f'<a href="{new}">Перейти</a>', encoding="utf-8")
+
 (site / "favicon.svg").write_text(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#2d4a43"/>'
     '<text x="32" y="41" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="26" fill="#fbfaf7">ВУ</text></svg>',
