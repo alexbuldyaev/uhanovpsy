@@ -72,12 +72,12 @@ p { margin: 0; }
 .seg button[aria-pressed="true"] { background: var(--pine); color: var(--card); }
 
 /* Chat */
-.chathead { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(10px); padding-block: 14px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.chathead { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); padding-block: 14px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .steps { display: flex; gap: 5px; }
 .steps i { width: 20px; height: 4px; border-radius: 2px; background: var(--line); }
 .steps i.on { background: var(--pine); } .steps i.done { background: var(--sand); }
 .thread { display: flex; flex-direction: column; gap: 10px; padding-block: 24px 8px; }
-.msg { max-width: 86%; padding: 14px 18px; border-radius: 20px; animation: rise .35s ease both; }
+.msg { scroll-margin-top: calc(78px + env(safe-area-inset-top, 0px)); max-width: 86%; padding: 14px 18px; border-radius: 20px; animation: rise .35s ease both; }
 .msg.v { background: var(--card); border: 1px solid var(--line); border-bottom-left-radius: 6px; align-self: flex-start; font-family: var(--serif); font-size: 21px; line-height: 1.38; font-variant-numeric: lining-nums; }
 .msg.u { background: var(--pine); color: var(--card); border-bottom-right-radius: 6px; align-self: flex-end; font-size: 15px; }
 .msg.badge { align-self: center; background: transparent; border: 1px dashed var(--sand); color: var(--muted); font-size: 13px; letter-spacing: .04em; padding: 8px 14px; border-radius: 999px; text-align: center; }
@@ -86,8 +86,9 @@ p { margin: 0; }
 .typing span:nth-child(2) { animation-delay: .15s; } .typing span:nth-child(3) { animation-delay: .3s; }
 @keyframes blink { 50% { opacity: 1; } }
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+#deck:not(:empty) { min-height: calc(100vh - 96px); min-height: calc(100dvh - 96px); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; padding-block: 8px; }
-.deck { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 16px; animation: rise .35s ease both; scroll-margin-top: 90px; }
+.deck { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 16px; animation: rise .35s ease both; scroll-margin-top: calc(78px + env(safe-area-inset-top, 0px)); }
 .deck .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
 .deck .hint-top { font-size: 13px; color: var(--muted); }
 .bar { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
@@ -439,6 +440,7 @@ function charQueue() {
   const core = [0, 1].flatMap(k => TYPES.map(t => ({ id: `c_${t.id}_${k}`, text: t.items[k], scale: "agree4" })));
   if (!core.every(q => has(q.id))) return core;
   const extra = leaders().flatMap(t => [2, 3, 4].map(k => ({ id: `c_${t.id}_${k}`, text: t.items[k], scale: "agree4" })));
+  extra.forEach(q => (q.extra = "char"));
   extra[0].before = "Спасибо. Теперь несколько уточняющих вопросов о том, что звучит в вас ярче всего.";
   return core.concat(extra);
 }
@@ -446,7 +448,7 @@ function attQueue() { return ATT.map((x, i) => ({ id: `a_${i}`, text: x.tf ? G(x
 function ltQueue() {
   return TRAPS.flatMap(t => {
     const first = { id: `l_${t.items[0]}`, text: M.lt[S.g][t.items[0] - 1], scale: "lt6" };
-    return A(first.id) >= 4 ? [first, { id: `l_${t.items[1]}`, text: M.lt[S.g][t.items[1] - 1], scale: "lt6" }] : [first];
+    return A(first.id) >= 4 ? [first, { id: `l_${t.items[1]}`, text: M.lt[S.g][t.items[1] - 1], scale: "lt6", extra: `lt-${t.id}` }] : [first];
   });
 }
 function resQueue() { return WHO.map((w, i) => ({ id: `w_${i}`, text: G(w[0], w[1]), scale: "who" })); }
@@ -455,10 +457,10 @@ const ittOn = () => has("g_0") && has("g_1") && A("g_0") + A("g_1") >= 2;
 function stateQueue() {
   const q = (p, i, text) => ({ id: `${p}_${i}`, text, scale: "freq" });
   const out = [q("p", 0, PHQ[0]), q("p", 1, PHQ[1])];
-  if (phqExt()) { const ext = [2, 3, 4, 5, 6, 7].map(i => q("p", i, PHQ[i])); ext[0].before = "Спасибо. Задам ещё несколько вопросов о настроении, чтобы лучше понять картину."; out.push(...ext); }
+  if (phqExt()) { const ext = [2, 3, 4, 5, 6, 7].map(i => ({ ...q("p", i, PHQ[i]), extra: "phq" })); ext[0].before = "Спасибо. Задам ещё несколько вопросов о настроении, чтобы лучше понять картину."; out.push(...ext); }
   out.push(q("g", 0, GAD[0]), q("g", 1, GAD[1]));
   if (ittOn()) {
-    const ext = ITT[S.g].map((t, i) => ({ id: `t_${i}`, text: t, scale: "itt" }));
+    const ext = ITT[S.g].map((t, i) => ({ id: `t_${i}`, text: t, scale: "itt", extra: "itt" }));
     ext[0].before = "Похоже, тревога вам знакома. Давайте посмотрим, из чего она складывается — десять коротких утверждений о последнем времени.";
     out.push(...ext);
   }
@@ -623,9 +625,18 @@ async function runStage(st) {
     const queue = st.queue();
     const q = queue.find(x => !has(x.id));
     if (!q) { deck.innerHTML = ""; return; }
-    if (q.before && !S.flags[q.id]) { S.flags[q.id] = 1; deck.innerHTML = ""; await say(q.before); }
-    const answered = queue.filter(x => has(x.id)).length;
-    const v = await ask(st, q, answered, queue.length, pre);
+    let lead = null;
+    if (q.before && !S.flags[q.id]) { S.flags[q.id] = 1; deck.innerHTML = ""; await say(q.before); lead = thread.lastElementChild; }
+    const base = queue.filter(x => !x.extra);
+    let label;
+    if (!q.extra) label = `${base.indexOf(q) + 1} из ${base.length}`;
+    else {
+      const grp = queue.filter(x => x.extra === q.extra);
+      label = grp.length > 1 ? `уточнение ${grp.indexOf(q) + 1} из ${grp.length}` : "уточняющий вопрос";
+    }
+    const frac = Math.max(S.prog?.[st.id] ?? 0, queue.filter(x => has(x.id)).length / queue.length);
+    (S.prog ||= {})[st.id] = frac;
+    const v = await ask(st, q, label, frac, pre, lead);
     pre = null;
     if (v === "back") {
       const prev = S.hist[st.id].pop();
@@ -635,7 +646,7 @@ async function runStage(st) {
   }
 }
 
-function ask(st, q, i, total, pre) {
+function ask(st, q, label, frac, pre, lead) {
   return new Promise(resolve => {
     const sel = v => (pre === v ? "sel" : "");
     let body = "";
@@ -656,9 +667,9 @@ function ask(st, q, i, total, pre) {
       body = `<div class="grid2">${FREQ.map((l, v) => `<button class="opt ${sel(v)}" data-v="${v}">${l}</button>`).join("")}</div>`;
     }
     deck.innerHTML = `<div class="deck">
-      <div class="top"><span>${["I","II","III","IV","V"][S.stage]} · ${esc(st.title)} · ${i + 1} из ${total}</span>
+      <div class="top"><span>${["I","II","III","IV","V"][S.stage]} · ${esc(st.title)} · ${esc(label)}</span>
         ${S.hist[st.id].length ? '<button class="link" id="back" style="padding:0">← назад</button>' : ""}</div>
-      <div class="bar"><div style="width:${(i / total) * 100}%"></div></div>
+      <div class="bar"><div style="width:${(frac * 100).toFixed(1)}%"></div></div>
       <div class="hint-top">${esc(q.scale === "itt" ? "Как часто в последнее время…" : st.hint)}</div>
       <div class="q">${esc(q.text)}</div>
       ${body}
@@ -674,7 +685,8 @@ function ask(st, q, i, total, pre) {
       });
     });
     $("#back")?.addEventListener("click", () => resolve("back"));
-    card.scrollIntoView({ behavior: "auto", block: "end" });
+    // Вопрос — сразу под шапкой чата; если перед ним было пояснение Виктора, показываем и его.
+    (lead || card).scrollIntoView({ behavior: "auto", block: "start" });
   });
 }
 
