@@ -181,7 +181,7 @@ body.has-dock { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 .invite-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .invite .btn.ghost-light { background: transparent; color: var(--card); box-shadow: inset 0 0 0 1px rgba(255,255,255,.45); align-self: auto; }
 .invite .btn.ghost-light:hover { background: rgba(255,255,255,.08); }
-@media (max-width: 560px) { .dock-text, .dock .mono { display: none; } .dock .btn { flex: 1; min-width: 0; padding-inline: 14px; } .dock .pdf-btn { flex: none; } .dock .long { display: none; } .dock .short { display: inline; } }
+@media (max-width: 560px) { .dock-text, .dock .mono { display: none; } .dock-in { gap: 8px; } .dock .btn { flex: 1; min-width: 0; padding-inline: 12px; font-size: 15px; } .dock .pdf-btn, .dock .ghost { flex: none; } .dock .long { display: none; } .dock .short { display: inline; } }
 .sheet-bg { position: fixed; inset: 0; z-index: 30; background: rgba(30,36,34,.45); display: grid; align-items: end; justify-items: center; }
 .sheet { width: 100%; max-width: 520px; background: var(--card); border-radius: 26px 26px 0 0; display: flex; flex-direction: column; gap: 16px;
   padding-block: 26px calc(26px + env(safe-area-inset-bottom, 0px)); padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
@@ -796,7 +796,7 @@ function showResult() {
 
   $("#result").innerHTML = `
     <div class="stack g16">
-      <div class="who"><div class="mono">ВУ</div><div class="stack"><span class="eyebrow">Пять граней · ${today}</span><a href="index.html" style="font-weight:600;text-decoration:none">Виктор Уханов <span style="color:var(--muted);font-weight:500;font-size:14px">· обо мне →</span></a></div></div>
+      <div class="who"><div class="mono">ВУ</div><div class="stack"><span class="eyebrow">Пять граней · ${today}</span><span style="font-weight:600">Виктор Уханов</span></div></div>
       <h1>${n},<br>ваш профиль</h1>
       <p class="voice" style="max-width:32em">Это не диагноз и не оценка. Скорее набросок портрета: какие черты в вас звучат громче, как вы держитесь в близости, что повторяется и сколько у вас сейчас сил.</p>
     </div>
@@ -868,17 +868,14 @@ function showResult() {
         <div class="stack g8"><span class="handle">@uhanovv</span><span style="font-size:14px;color:#b7c6bf">Наведите камеру телефона или нажмите кнопку ниже</span></div>
       </div>
       <div class="invite-actions">
-        <a class="btn" data-write href="${TG}" target="_blank" rel="noopener">Отправить профиль Виктору</a>
-        <a class="btn ghost-light" href="${TG}" target="_blank" rel="noopener">Просто написать</a>
-        <button class="btn ghost-light" data-send type="button">Отправить PDF</button>
+        <a class="btn" data-write href="${TG}" target="_blank" rel="noopener">Написать Виктору</a>
+        <button class="btn ghost-light" data-send type="button">PDF профиля</button>
+        <a class="btn ghost-light" href="index.html">Обо мне</a>
       </div>
-      <span style="font-size:13px;color:#b7c6bf">«Отправить профиль» откроет личный чат с Виктором, где профиль уже вписан в сообщение — останется нажать «Отправить». «Просто написать» откроет пустой чат. <a href="index.html" style="color:var(--card)">Подробнее обо мне</a></span>
+      <span style="font-size:13px;color:#b7c6bf">«Написать Виктору» откроет личный чат, где ваш профиль уже вписан в сообщение — останется нажать «Отправить». В «PDF профиля» файл можно скачать или отправить Виктору.</span>
     </section>
 
     <div class="actions" data-html2canvas-ignore>
-      <button class="btn ghost" id="copy">Скопировать профиль для Виктора</button>
-      <button class="btn ghost" id="pdf">Скачать PDF</button>
-      <a class="btn ghost" href="index.html">Обо мне</a>
       <button class="link" id="again">Пройти заново</button>
     </div>
 
@@ -898,14 +895,6 @@ function showResult() {
   const summaryPdf = summary + "\nМой профиль — в приложенном PDF.";
   const tgLink = `${TG}?text=${encodeURIComponent(summary)}`;
 
-  $("#copy").addEventListener("click", () => copyText(summary, "Скопировано. Вставьте в сообщение Виктору"));
-  $("#pdf").addEventListener("click", async e => {
-    const btn = e.currentTarget, label = btn.textContent;
-    btn.disabled = true; btn.textContent = "Готовлю PDF…";
-    try { const f = await makePdf(); downloadFile(f); toast("PDF сохранён в загрузки"); }
-    catch (err) { toast("Не получилось собрать PDF. Попробуйте ещё раз"); }
-    btn.disabled = false; btn.textContent = label;
-  });
 
   // Закреплённая панель
   document.querySelector(".dock")?.remove();
@@ -913,12 +902,14 @@ function showResult() {
   dock.className = "dock"; dock.setAttribute("data-html2canvas-ignore", "");
   dock.innerHTML = `<div class="dock-in">
     <div class="mono sm">ВУ</div>
-    <div class="dock-text"><b>Сессия знакомства · бесплатно</b><span>Отправьте профиль или просто напишите Виктору</span></div>
-    <a class="btn ghost" href="${TG}" target="_blank" rel="noopener"><span class="long">Просто написать Виктору</span><span class="short">Написать</span></a>
-    <a class="btn" data-write href="${TG}" target="_blank" rel="noopener"><span class="long">Отправить профиль Виктору</span><span class="short">Отправить профиль</span></a>
+    <div class="dock-text"><b>Сессия знакомства · бесплатно</b><span>Напишите Виктору — профиль уже будет в сообщении</span></div>
+    <a class="btn ghost" href="index.html">Обо мне</a>
+    <button class="btn ghost pdf-btn" data-send type="button" aria-label="PDF профиля: скачать или отправить">PDF</button>
+    <a class="btn" data-write href="${TG}" target="_blank" rel="noopener"><span class="long">Написать Виктору</span><span class="short">Написать</span></a>
   </div>`;
   document.body.append(dock); document.body.classList.add("has-dock");
-  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summaryPdf)));
+  const tgLinkPdf = `${TG}?text=${encodeURIComponent(summaryPdf)}`;
+  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summaryPdf, tgLinkPdf)));
   // Главная кнопка: сразу личный чат с Виктором с готовым текстом профиля.
   // Текст дополнительно копируется — на случай, если приложение Telegram не подставит его само.
   document.querySelectorAll("[data-write]").forEach(a => {
@@ -970,47 +961,45 @@ async function copyText(text, msg) {
   try { await navigator.clipboard.writeText(text); if (msg) toast(msg); return true; }
   catch (e) { prompt("Скопируйте текст:", text); return false; }
 }
-async function sendToViktor(btn, summary) {
+async function sendToViktor(btn, summary, tgLinkPdf) {
   const label = btn.innerHTML;
-  btn.disabled = true; btn.textContent = "Готовлю PDF…";
+  btn.disabled = true; btn.textContent = "Готовлю…";
   let file = null;
   try { file = await makePdf(); } catch (e) { file = null; }
   btn.disabled = false; btn.innerHTML = label;
-  const canShare = file && navigator.canShare && navigator.canShare({ files: [file] });
-  openSheet(file, summary, canShare);
+  if (!file) { toast("Не получилось собрать PDF. Проверьте интернет и попробуйте ещё раз"); return; }
+  openSheet(file, summary, tgLinkPdf);
 }
-function openSheet(file, summary, canShare) {
+// Окно PDF: скачать файл или отправить его Виктору.
+function openSheet(file, summary, tgLinkPdf) {
   document.querySelector(".sheet-bg")?.remove();
+  const canShare = navigator.canShare && navigator.canShare({ files: [file] });
   const bg = document.createElement("div");
   bg.className = "sheet-bg"; bg.setAttribute("data-html2canvas-ignore", "");
-  const fileRow = file ? `<div class="file"><i>PDF</i><div class="stack"><b>${esc(file.name)}</b><span class="muted">${Math.max(1, Math.round(file.size / 1024))} КБ · ваш профиль</span></div></div>` : "";
-  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="Отправить профиль Виктору">
-    <span class="eyebrow">Сессия знакомства</span>
-    <h3>Отправьте профиль Виктору</h3>
-    ${fileRow}
+  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="PDF профиля">
+    <span class="eyebrow">PDF профиля</span>
+    <h3>Скачать или отправить Виктору</h3>
+    <div class="file"><i>PDF</i><div class="stack"><b>${esc(file.name)}</b><span class="muted">${Math.max(1, Math.round(file.size / 1024))} КБ · ваш профиль</span></div></div>
     ${canShare
-      ? `<p class="muted small">Нажмите «Отправить», выберите Telegram и чат с Виктором (@uhanovv). Файл и сообщение уйдут вместе.</p>
-         <button class="btn" id="share">Отправить в Telegram</button>`
-      : `<ol>
-           <li>${file ? "PDF с профилем сохранён в загрузки." : "PDF собрать не удалось — отправьте текст профиля."}</li>
-           <li>Откройте чат с Виктором и вставьте сообщение — оно уже скопировано.</li>
-           ${file ? "<li>Прикрепите файл скрепкой или перетащите его в чат.</li>" : ""}
-         </ol>
-         <a class="btn" href="${TG}" target="_blank" rel="noopener" id="open-tg">Открыть чат с Виктором</a>`}
-    <button class="link" id="close">Закрыть</button>
+      ? `<button class="btn" id="share" type="button">Отправить Виктору</button>
+         <p class="muted small" style="margin-top:-6px">Откроется меню «Поделиться»: выберите Telegram и чат с Виктором (@uhanovv).</p>`
+      : `<a class="btn" id="send-tg" href="${tgLinkPdf}" target="_blank" rel="noopener">Отправить Виктору</a>
+         <p class="muted small" style="margin-top:-6px">Файл скачается, а чат с Виктором откроется с готовым сообщением — прикрепите к нему файл скрепкой.</p>`}
+    <button class="btn ghost" id="dl" type="button">Скачать</button>
+    <button class="link" id="close" type="button">Закрыть</button>
   </div>`;
   document.body.append(bg);
   const close = () => bg.remove();
   bg.addEventListener("click", e => { if (e.target === bg) close(); });
   $("#close").addEventListener("click", close);
+  $("#dl").addEventListener("click", () => { downloadFile(file); toast("PDF сохранён"); });
   if (canShare) {
     $("#share").addEventListener("click", async () => {
       try { await navigator.share({ files: [file], title: "Пять граней", text: summary }); close(); toast("Спасибо! Виктор ответит в Telegram"); }
-      catch (e) { if (e.name !== "AbortError") { downloadFile(file); copyText(summary); toast("PDF сохранён, текст скопирован"); } }
+      catch (e) { if (e.name !== "AbortError") { downloadFile(file); toast("Не получилось поделиться — PDF сохранён, отправьте его Виктору"); } }
     });
   } else {
-    if (file) downloadFile(file);
-    copyText(summary);
+    $("#send-tg").addEventListener("click", () => { downloadFile(file); });
   }
 }
 
