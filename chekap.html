@@ -175,7 +175,11 @@ body.has-dock { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 .dock .btn { padding: 15px 22px; white-space: nowrap; }
 .dock .sos { font-size: 13px; color: var(--alert); text-decoration: none; white-space: nowrap; font-weight: 600; }
 .dock .short { display: none; }
-@media (max-width: 560px) { .dock-text, .dock .mono { display: none; } .dock .btn { flex: 1; min-width: 0; padding-inline: 14px; } .dock .long { display: none; } .dock .short { display: inline; } }
+.dock .pdf-btn { padding: 15px 16px; flex: none; }
+.invite-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.invite .btn.ghost-light { background: transparent; color: var(--card); box-shadow: inset 0 0 0 1px rgba(255,255,255,.45); align-self: auto; }
+.invite .btn.ghost-light:hover { background: rgba(255,255,255,.08); }
+@media (max-width: 560px) { .dock-text, .dock .mono { display: none; } .dock .btn { flex: 1; min-width: 0; padding-inline: 14px; } .dock .pdf-btn { flex: none; } .dock .long { display: none; } .dock .short { display: inline; } }
 .sheet-bg { position: fixed; inset: 0; z-index: 30; background: rgba(30,36,34,.45); display: grid; align-items: end; justify-items: center; }
 .sheet { width: 100%; max-width: 520px; background: var(--card); border-radius: 26px 26px 0 0; display: flex; flex-direction: column; gap: 16px;
   padding-block: 26px calc(26px + env(safe-area-inset-bottom, 0px)); padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
@@ -850,8 +854,11 @@ function showResult() {
         <div class="qr">${document.getElementById("qr-tpl").innerHTML}</div>
         <div class="stack g8"><span class="handle">@uhanovv</span><span style="font-size:14px;color:#b7c6bf">Наведите камеру телефона или нажмите кнопку ниже</span></div>
       </div>
-      <button class="btn" data-send>Записаться и отправить профиль</button>
-      <span style="font-size:13px;color:#b7c6bf">Профиль уйдёт Виктору в Telegram PDF-файлом. Или просто напишите <a href="${TG}" target="_blank" rel="noopener" style="color:var(--card)">@uhanovv</a>. <a href="index.html" style="color:var(--card)">Подробнее обо мне</a></span>
+      <div class="invite-actions">
+        <a class="btn" data-write href="${TG}" target="_blank" rel="noopener">Написать Виктору в Telegram</a>
+        <button class="btn ghost-light" data-send type="button">Отправить PDF профиля</button>
+      </div>
+      <span style="font-size:13px;color:#b7c6bf">Откроется личный чат с Виктором, а ваш профиль уже будет в сообщении — останется нажать «Отправить». <a href="index.html" style="color:var(--card)">Подробнее обо мне</a></span>
     </section>
 
     <div class="actions" data-html2canvas-ignore>
@@ -864,14 +871,17 @@ function showResult() {
   `;
   $("#result").hidden = false; window.scrollTo(0, 0);
 
-  const summary = [
+  const lines = [
     `Виктор, здравствуйте! Это ${S.name}, я ${G("прошёл", "прошла")} «Пять граней».`,
     `Архетип: ${lead.map(x => x.arch).join(", ")}.`,
     `Привязанность: ${att.name.toLowerCase()} стиль.`,
     `Сценарии: ${active.length ? active.map(t => t.title + (t.level === 2 ? " (ярко)" : "")).join(", ") : "не откликнулись"}.`,
     `Ресурс: ${res.pct}%. Настроение: ${st.mood}, тревога: ${st.anx}${st.parts ? ` (больше всего — ${st.parts[0].title.toLowerCase()})` : ""}.`,
-    "Хочу записаться на сессию знакомства. Мой профиль — в приложенном PDF.",
-  ].join("\n");
+    "Хочу записаться на сессию знакомства.",
+  ];
+  const summary = lines.join("\n");
+  const summaryPdf = summary + "\nМой профиль — в приложенном PDF.";
+  const tgLink = `${TG}?text=${encodeURIComponent(summary)}`;
 
   $("#copy").addEventListener("click", () => copyText(summary, "Скопировано. Вставьте в сообщение Виктору"));
   $("#pdf").addEventListener("click", async e => {
@@ -890,10 +900,17 @@ function showResult() {
     <div class="mono sm">ВУ</div>
     <div class="dock-text"><b>Сессия знакомства · бесплатно</b><span>Отправьте профиль Виктору — разберём его вместе</span></div>
     ${st.crisis ? '<a class="sos" href="tel:88002000122">Телефон доверия</a>' : ""}
-    <button class="btn" data-send><span class="long">Отправить профиль Виктору</span><span class="short">Отправить профиль</span></button>
+    <button class="btn ghost pdf-btn" data-send type="button" aria-label="Отправить PDF профиля" title="Отправить PDF профиля">PDF</button>
+    <a class="btn" data-write href="${TG}" target="_blank" rel="noopener"><span class="long">Написать Виктору в Telegram</span><span class="short">Написать Виктору</span></a>
   </div>`;
   document.body.append(dock); document.body.classList.add("has-dock");
-  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summary)));
+  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summaryPdf)));
+  // Главная кнопка: сразу личный чат с Виктором с готовым текстом профиля.
+  // Текст дополнительно копируется — на случай, если приложение Telegram не подставит его само.
+  document.querySelectorAll("[data-write]").forEach(a => {
+    a.href = tgLink;
+    a.addEventListener("click", () => { try { navigator.clipboard?.writeText(summary).catch(() => {}); } catch (e) {} });
+  });
   $("#again").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch (e) {} location.reload(); });
 }
 /* ============ PDF и отправка ============ */
