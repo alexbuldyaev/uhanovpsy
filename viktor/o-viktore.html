@@ -49,9 +49,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 nav { display: flex; gap: 26px; font-size: 14px; }
 nav a { text-decoration: none; color: var(--muted); }
 nav a:hover { color: var(--ink); }
-.bar .btn { padding: 13px 20px; font-size: 14px; }
+.bar .btn { padding: 13px 20px; font-size: 14px; white-space: nowrap; }
+.bar-ctas { display: flex; gap: 8px; align-items: center; }
+.btn.bright { background: #e0603f; color: #fff; box-shadow: 0 6px 18px rgba(224, 96, 63, .35); }
+.btn.bright:hover { background: #cc5233; }
 .bar .short { display: none; }
-@media (max-width: 420px) { .bar .long { display: none; } .bar .short { display: inline; } }
+@media (max-width: 520px) { .bar .long { display: none; } .bar .short { display: inline; } .bar .btn { padding: 12px 16px; } }
 @media (max-width: 860px) { nav { display: none; } }
 @media (max-width: 420px) { .brand b { display: none; } }
 
@@ -139,7 +142,9 @@ dialog.lb button { appearance: none; border: 1px solid rgba(255,255,255,.4); bac
 .wm-rut { font: 800 15px/1 var(--sans); letter-spacing: .06em; }
 .wm-inst { font: 500 14px/1.2 var(--sans); }
 .wm-inst b { font-family: var(--serif); font-size: 19px; font-weight: 600; margin-right: 8px; }
-@media (max-width: 640px) { .marks { grid-template-columns: 1fr; gap: 10px; } }
+.marks > * { min-width: 0; }
+@media (max-width: 640px) { .marks { grid-template-columns: minmax(0, 1fr); gap: 10px; } }
+@media (max-width: 400px) { .mark { white-space: normal; height: auto; min-height: 46px; padding-block: 8px; line-height: 1.25; } }
 
 /* Media */
 .media-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: clamp(28px, 6vw, 80px); align-items: start; }
@@ -193,8 +198,11 @@ footer .in { display: flex; justify-content: space-between; gap: 16px; flex-wrap
 <header id="top">
   <div class="in bar">
     <a class="brand" href="#top"><span class="mono">ВУ</span><b>Виктор Уханов</b></a>
-    <nav aria-label="Разделы"><a href="#approach">Подход</a><a href="#topics">С чем работаю</a><a href="#education">Образование</a><a href="#media">В медиа</a><a href="pyat-granej.html">Экспресс-чекап</a></nav>
-    <a class="btn" href="https://t.me/uhanovv" target="_blank" rel="noopener"><span class="long">Написать в Telegram</span><span class="short">Написать</span></a>
+    <nav aria-label="Разделы"><a href="#approach">Подход</a><a href="#topics">С чем работаю</a><a href="#education">Образование</a><a href="#media">В медиа</a></nav>
+    <div class="bar-ctas">
+      <a class="btn bright" href="pyat-granej.html"><span class="long">Пройти чекап</span><span class="short">Чекап</span></a>
+      <a class="btn" href="https://t.me/uhanovv" target="_blank" rel="noopener"><span class="long">Написать в Telegram</span><span class="short">Написать</span></a>
+    </div>
   </div>
 </header>
 
