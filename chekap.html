@@ -219,6 +219,18 @@ body.has-dock { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   .invite .voice, .invite .eyebrow, .agenda li, .agenda li b { color: var(--ink); }
 }
 </style>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114350995', 'ym');
+    ym(114350995, 'init', {ssr:true, webvisor:false, clickmap:false, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/114350995" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
 <div class="wrap" id="wrap">
@@ -296,7 +308,7 @@ body.has-dock { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
     </label>
     <button class="btn" id="start" disabled>Начать чекап</button>
     <button class="link" id="resume" hidden></button>
-    <p class="muted small">Это не диагностика, а повод для разговора.</p>
+    <p class="muted small">Это не диагностика, а повод для разговора. Сайт использует cookie и Яндекс Метрику, чтобы считать посещения, — ваши ответы и результаты туда не передаются.</p>
   </div>
 </section>
 
@@ -330,6 +342,9 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const sleep = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const TG = "https://t.me/uhanovv";
+// Яндекс Метрика: только факты действий (начал, прошёл грань, нажал кнопку). Ответы и результаты не передаются.
+const METRIKA_ID = 114350995;
+const goal = (name, params) => { try { if (typeof window.ym === "function") window.ym(METRIKA_ID, "reachGoal", name, params); } catch (e) {} };
 const STORE = "vu-five-facets-v1";
 
 /* ============ I. Характер: авторская экспресс-методика ============
@@ -542,7 +557,7 @@ document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click"
 }));
 startEl.addEventListener("click", () => {
   S = { name: nameEl.value.trim(), g: S.g, stage: 0, ans: {}, hist: {}, flags: {}, done: false };
-  save(); begin(false);
+  save(); goal("chekap_start"); begin(false);
 });
 const saved = load();
 if (saved && saved.name && Object.keys(saved.ans || {}).length) {
@@ -621,9 +636,11 @@ async function begin(resumed) {
     if (!skipIntro) { await say(INTRO[S.stage]); await choose(S.stage === 0 ? "Хорошо, начнём" : "Продолжим"); }
     skipIntro = false;
     await runStage(STAGES[S.stage]);
+    goal(`facet_${S.stage + 1}_done`);
     await outro(S.stage);
   }
   S.done = true; save(); steps();
+  goal("chekap_done");
   await choose("Открыть мой профиль");
   showResult();
 }
@@ -918,12 +935,14 @@ function showResult() {
   </div>`;
   document.body.append(dock); document.body.classList.add("has-dock");
   const tgLinkPdf = `${TG}?text=${encodeURIComponent(summaryPdf)}`;
-  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summaryPdf, tgLinkPdf, tgLink)));
+  const place = el => (el.closest(".dock") ? "panel" : "invite");
+  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => { goal("pdf_open", { place: place(b) }); sendToViktor(b, summaryPdf, tgLinkPdf, tgLink); }));
+  document.querySelectorAll('#result a[href="index.html"], .dock a[href="index.html"]').forEach(a => a.addEventListener("click", () => goal("about_click", { place: place(a) })));
   // Главная кнопка: сразу личный чат с Виктором с готовым текстом профиля.
   // Текст дополнительно копируется — на случай, если приложение Telegram не подставит его само.
   document.querySelectorAll("[data-write]").forEach(a => {
     a.href = tgLink;
-    a.addEventListener("click", () => { try { navigator.clipboard?.writeText(summary).catch(() => {}); } catch (e) {} });
+    a.addEventListener("click", () => { goal("write_viktor", { place: place(a) }); try { navigator.clipboard?.writeText(summary).catch(() => {}); } catch (e) {} });
   });
   $("#again").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch (e) {} location.reload(); });
 }
@@ -1047,12 +1066,12 @@ function openSheet(file, summary, tgLinkPdf, tgLink) {
   $("#close").addEventListener("click", close);
   if (IS_MOBILE) {
     $("#share").addEventListener("click", async () => {
-      try { await navigator.share({ files: [file], title: "Пять граней", text: summary }); close(); toast("Готово"); }
+      try { await navigator.share({ files: [file], title: "Пять граней", text: summary }); goal("pdf_share"); close(); toast("Готово"); }
       catch (e) { if (e.name !== "AbortError") openNoFileNote(tgLink, "Не получилось открыть меню «Поделиться»."); }
     });
   } else {
-    $("#dl").addEventListener("click", () => { downloadFile(file); toast("PDF сохранён"); });
-    $("#send-tg").addEventListener("click", () => { downloadFile(file); });
+    $("#dl").addEventListener("click", () => { goal("pdf_download"); downloadFile(file); toast("PDF сохранён"); });
+    $("#send-tg").addEventListener("click", () => { goal("pdf_send_tg"); downloadFile(file); });
   }
 }
 

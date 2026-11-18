@@ -198,6 +198,18 @@ footer .in { display: flex; justify-content: space-between; gap: 16px; flex-wrap
 .reveal.pre { opacity: 0; transform: translateY(16px); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .reveal, .reveal.pre { transition: none; opacity: 1; transform: none; } }
 </style>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114350995', 'ym');
+    ym(114350995, 'init', {ssr:true, webvisor:true, clickmap:true, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/114350995" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
 
@@ -345,6 +357,12 @@ footer .in { display: flex; justify-content: space-between; gap: 16px; flex-wrap
 const head = document.querySelector("header");
 const onScroll = () => head.classList.toggle("scrolled", scrollY > 8);
 addEventListener("scroll", onScroll, { passive: true }); onScroll();
+// Яндекс Метрика: цели для кнопок
+const goal = (name, params) => { try { if (typeof window.ym === "function") window.ym(114350995, "reachGoal", name, params); } catch (e) {} };
+const where = el => el.closest("header") ? "header" : el.closest(".final") ? "final" : el.closest(".hero") ? "hero" : el.closest("footer") ? "footer" : "other";
+document.querySelectorAll('a[href^="https://t.me/uhanovv"]').forEach(a => a.addEventListener("click", () => goal("write_viktor_main", { place: where(a) })));
+document.querySelectorAll('a[href^="https://t.me/Uhanovpsy"]').forEach(a => a.addEventListener("click", () => goal("channel_click", { place: where(a) })));
+document.querySelectorAll('a[href="chekap.html"], a[href="chekap.html"], a[href="chekap.html"]').forEach(a => a.addEventListener("click", () => goal("go_chekap", { place: where(a) })));
 // Просмотр документов
 const lb = document.getElementById("lb");
 document.querySelectorAll(".thumb").forEach(t => t.addEventListener("click", () => {
@@ -361,6 +379,20 @@ if (!matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObse
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.remove("pre"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll(".reveal").forEach(el => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add("pre"); io.observe(el); } });
 }
+</script>
+<div id="cookie-note" hidden style="position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;max-width:360px;background:#1e2422;color:#fbfaf7;border-radius:16px;padding:14px 16px;font:13px/1.45 Manrope,-apple-system,'Segoe UI',Roboto,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;gap:12px;align-items:center">
+  <span>Сайт использует cookie и Яндекс Метрику, чтобы считать посещения. Ответы чекапа не передаются. <a href="privacy.html" style="color:#cbd8d2">Подробнее</a></span>
+  <button type="button" id="cookie-ok" style="flex:none;border:0;border-radius:999px;background:#fbfaf7;color:#2d4a43;font:600 13px Manrope,-apple-system,sans-serif;padding:9px 14px;cursor:pointer">Понятно</button>
+</div>
+<script>
+(function () {
+  var note = document.getElementById("cookie-note"), KEY = "vu-cookie-ok";
+  try { if (localStorage.getItem(KEY)) return; } catch (e) {}
+  // над нижней панелью профиля, если она есть
+  var lift = function () { var d = document.querySelector(".dock"); note.style.bottom = d ? "calc(" + (d.offsetHeight + 12) + "px + env(safe-area-inset-bottom,0px))" : "calc(16px + env(safe-area-inset-bottom,0px))"; };
+  note.hidden = false; lift(); setInterval(lift, 1000);
+  document.getElementById("cookie-ok").addEventListener("click", function () { note.remove(); try { localStorage.setItem(KEY, "1"); } catch (e) {} });
+})();
 </script>
 </body>
 </html>
