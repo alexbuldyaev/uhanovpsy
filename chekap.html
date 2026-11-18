@@ -855,10 +855,11 @@ function showResult() {
         <div class="stack g8"><span class="handle">@uhanovv</span><span style="font-size:14px;color:#b7c6bf">Наведите камеру телефона или нажмите кнопку ниже</span></div>
       </div>
       <div class="invite-actions">
-        <a class="btn" data-write href="${TG}" target="_blank" rel="noopener">Написать Виктору в Telegram</a>
-        <button class="btn ghost-light" data-send type="button">Отправить PDF профиля</button>
+        <a class="btn" data-write href="${TG}" target="_blank" rel="noopener">Отправить профиль Виктору</a>
+        <a class="btn ghost-light" href="${TG}" target="_blank" rel="noopener">Просто написать</a>
+        <button class="btn ghost-light" data-send type="button">Отправить PDF</button>
       </div>
-      <span style="font-size:13px;color:#b7c6bf">Откроется личный чат с Виктором, а ваш профиль уже будет в сообщении — останется нажать «Отправить». <a href="index.html" style="color:var(--card)">Подробнее обо мне</a></span>
+      <span style="font-size:13px;color:#b7c6bf">«Отправить профиль» откроет личный чат с Виктором, где профиль уже вписан в сообщение — останется нажать «Отправить». «Просто написать» откроет пустой чат. <a href="index.html" style="color:var(--card)">Подробнее обо мне</a></span>
     </section>
 
     <div class="actions" data-html2canvas-ignore>
@@ -898,10 +899,9 @@ function showResult() {
   dock.className = "dock"; dock.setAttribute("data-html2canvas-ignore", "");
   dock.innerHTML = `<div class="dock-in">
     <div class="mono sm">ВУ</div>
-    <div class="dock-text"><b>Сессия знакомства · бесплатно</b><span>Отправьте профиль Виктору — разберём его вместе</span></div>
-    ${st.crisis ? '<a class="sos" href="tel:88002000122">Телефон доверия</a>' : ""}
-    <button class="btn ghost pdf-btn" data-send type="button" aria-label="Отправить PDF профиля" title="Отправить PDF профиля">PDF</button>
-    <a class="btn" data-write href="${TG}" target="_blank" rel="noopener"><span class="long">Написать Виктору в Telegram</span><span class="short">Написать Виктору</span></a>
+    <div class="dock-text"><b>Сессия знакомства · бесплатно</b><span>Отправьте профиль или просто напишите Виктору</span></div>
+    <a class="btn ghost" href="${TG}" target="_blank" rel="noopener"><span class="long">Просто написать Виктору</span><span class="short">Написать</span></a>
+    <a class="btn" data-write href="${TG}" target="_blank" rel="noopener"><span class="long">Отправить профиль Виктору</span><span class="short">Отправить профиль</span></a>
   </div>`;
   document.body.append(dock); document.body.classList.add("has-dock");
   document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summaryPdf)));
