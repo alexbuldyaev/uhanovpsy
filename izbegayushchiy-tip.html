@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Избегающий тип привязанности — Виктор Уханов</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://uhanovpsy.ru/izbegayushchiy-tip.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://uhanovpsy.ru/izbegayushchiy-tip.html">
+<meta property="og:title" content="Избегающий тип привязанности — Виктор Уханов">
+<meta property="og:description" content="Как проявляется избегающий тип привязанности, откуда он берётся и что помогает. Мини-тест из 5 вопросов.">
+<meta property="og:image" content="https://uhanovpsy.ru/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Что такое избегающий тип привязанности, как он проявляется в отношениях и откуда берётся. Мини-тест из 5 вопросов.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500;600&display=swap">
+<style>
+/* Layout: an editorial article column (680px) with one wide quiz card in the middle; same linen palette and pine accent as the site. */
+:root {
+  --paper: #f2f0eb; --card: #fbfaf7; --ink: #1e2422; --soft: #4a504c; --muted: #6c726d; --line: #e0dcd3;
+  --pine: #2d4a43; --pine-soft: #e3e9e5; --sand: #cdbfa8;
+  --serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  --sans: "Manrope", "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.7 var(--sans); -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+.in { max-width: 1040px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.col { max-width: 680px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.012em; margin: 0; text-wrap: balance; font-variant-numeric: lining-nums; }
+h1 { font-size: clamp(42px, 7.4vw, 76px); line-height: 1; }
+h2 { font-size: clamp(32px, 4.6vw, 44px); line-height: 1.08; }
+h3 { font-size: 25px; line-height: 1.2; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.voice { font-family: var(--serif); font-style: italic; font-size: clamp(23px, 2.6vw, 28px); line-height: 1.4; }
+.muted { color: var(--muted); }
+.btn { appearance: none; border: 0; cursor: pointer; font: 600 16px/1 var(--sans); padding: 17px 26px; border-radius: 999px; background: var(--pine); color: var(--card); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: background .15s ease, transform .15s ease; }
+.btn:hover { background: #24403a; } .btn:active { transform: scale(.98); }
+.btn.ghost { background: transparent; color: var(--pine); box-shadow: inset 0 0 0 1px var(--pine); }
+.btn.ghost:hover { background: var(--pine-soft); }
+:focus-visible { outline: 2px solid var(--pine); outline-offset: 3px; }
+
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 11; background: var(--paper); }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.ava { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 1px var(--line); background: var(--line); }
+.brand b { font-weight: 600; font-size: 15px; display: block; line-height: 1.2; }
+.brand span span { font-size: 12px; color: var(--muted); display: block; line-height: 1.3; }
+.bar .btn { padding: 12px 18px; font-size: 14px; white-space: nowrap; }
+.bar .short { display: none; }
+.nav { display: flex; align-items: center; gap: 18px; }
+.nav .home { font-size: 14px; color: var(--muted); text-decoration: none; }
+.nav .home:hover { color: var(--ink); }
+@media (max-width: 480px) { .bar .long, .brand span span { display: none; } .bar .short { display: inline; } }
+
+/* Article */
+.hero { padding-block: clamp(36px, 6vw, 72px) 20px; }
+.hero .voice { margin-top: 24px; color: var(--soft); }
+.meta { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 26px; font-size: 14px; color: var(--muted); }
+.meta a { color: var(--pine); font-weight: 600; text-decoration: none; }
+.photo { margin: 40px 0 0; border-radius: 26px; overflow: hidden; aspect-ratio: 16 / 9; background: #3d4342; }
+.photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.photo + figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; }
+article section { padding-block: 44px 0; }
+article p + p { margin-top: 16px; }
+article h2 { margin-bottom: 18px; }
+.signs { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.signs li { display: grid; grid-template-columns: 34px 1fr; gap: 0 12px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+.signs .n { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--sand); line-height: 1.3; }
+.signs b { display: block; font-weight: 600; }
+.signs span { color: var(--soft); font-size: 16px; }
+.quote { font-family: var(--serif); font-style: italic; font-size: clamp(26px, 3.4vw, 34px); line-height: 1.3; padding: 6px 0 6px 24px; border-left: 2px solid var(--sand); margin-top: 28px; }
+.types { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.type { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.type.me { border-color: var(--pine); box-shadow: inset 0 0 0 1px var(--pine); }
+.type .axis { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.type p { font-size: 15px; color: var(--soft); line-height: 1.55; }
+@media (max-width: 560px) { .types { grid-template-columns: 1fr; } }
+.helps { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.helps li { padding-left: 28px; position: relative; color: var(--soft); }
+.helps li::before { content: "—"; position: absolute; left: 0; color: var(--sand); }
+.helps b { color: var(--ink); font-weight: 600; }
+
+/* Quiz */
+.quiz { margin-block: 56px 0; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 90px; }
+.quiz .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+.progress { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.progress > div { height: 100%; background: var(--pine); transition: width .25s ease; }
+.q { font-family: var(--serif); font-size: clamp(25px, 3vw, 30px); line-height: 1.3; min-height: 2.6em; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opt { appearance: none; text-align: left; cursor: pointer; font: 400 15px/1.4 var(--sans); color: var(--ink); padding: 15px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--paper); transition: border-color .12s ease, background .12s ease; }
+.opt:hover { border-color: var(--sand); }
+.opt.sel { border-color: var(--pine); background: var(--pine-soft); }
+.link { background: none; border: 0; color: var(--muted); font: 500 14px var(--sans); cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+.note { font-size: 13px; color: var(--muted); }
+
+/* Result */
+.result { display: grid; grid-template-columns: 1fr 260px; gap: 24px 36px; align-items: start; }
+.result > * { min-width: 0; }
+.result h3 { font-size: clamp(30px, 4vw, 40px); }
+.result .tag { display: inline-block; font-size: 13px; line-height: 1.35; padding: 6px 12px; border-radius: 12px; background: var(--pine); color: var(--card); margin-bottom: 12px; }
+.result p { color: var(--soft); }
+.result ul { margin: 14px 0 0; padding-left: 20px; color: var(--soft); }
+.result li + li { margin-top: 6px; }
+.quad { display: block; width: 100%; max-width: 280px; margin: 0 auto; }
+.quad text { font: 500 11px var(--sans); fill: var(--muted); }
+.cta { grid-column: 1 / -1; display: flex; gap: 10px; flex-wrap: wrap; padding-top: 18px; border-top: 1px solid var(--line); }
+.cta-note { grid-column: 1 / -1; font-size: 13px; color: var(--muted); margin-top: -8px; }
+@media (max-width: 720px) { .result { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .cta .btn { width: 100%; } .cta .link { margin: 4px auto 0; } .cta .long { display: none; } }
+.cta .short { display: none; } @media (max-width: 560px) { .cta .short { display: inline; } }
+
+/* Final */
+.final { margin-top: 72px; background: var(--pine); color: var(--card); }
+.final .in { padding-block: clamp(48px, 7vw, 80px); display: grid; grid-template-columns: 1.3fr .7fr; gap: 28px 56px; align-items: center; }
+.final .in > * { min-width: 0; }
+.final .eyebrow { color: #b7c6bf; }
+.final .voice { color: #e8eeea; margin-top: 16px; }
+.final .btns { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.final .btn { background: var(--card); color: var(--pine); }
+.final .btn.ghost { background: transparent; color: var(--card); box-shadow: inset 0 0 0 1px rgba(255,255,255,.45); }
+@media (max-width: 760px) { .final .in { grid-template-columns: 1fr; } }
+footer { padding-block: 26px calc(26px + env(safe-area-inset-bottom, 0px)); font-size: 13px; color: var(--muted); }
+footer .in { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+</style>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114350995', 'ym');
+    ym(114350995, 'init', {ssr:true, webvisor:false, clickmap:false, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/114350995" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+
+<header>
+  <div class="in bar">
+    <a class="brand" href="index.html"><img class="ava" src="img/article-13-6ad092d0b9.jpg" alt="Виктор Уханов" width="40" height="40"><span><b>Виктор Уханов</b><span>практикующий психолог</span></span></a>
+    <nav class="nav"><a class="home" href="index.html">Главная</a><a class="btn" data-write href="https://t.me/uhanovv" target="_blank" rel="noopener"><span class="long">Написать в Telegram</span><span class="short">Написать</span></a></nav>
+  </div>
+</header>
+
+<main>
+<article class="in">
+  <div class="col hero">
+    <span class="eyebrow">Отношения · привязанность</span>
+    <h1 style="margin-top:16px">Избегающий тип привязанности</h1>
+    <p class="voice">Когда хочется близости, но стоит ей появиться — становится тесно. Разбираемся, как устроен этот сценарий, откуда он берётся и что с ним можно делать.</p>
+    <div class="meta"><span>Виктор Уханов</span><span>·</span><span>5 минут чтения</span><span>·</span><a href="#test">мини-тест из 5 вопросов ↓</a></div>
+  </div>
+
+  <div class="col">
+    <figure style="margin:0"><div class="photo"><img src="img/about-4-9535728968.jpg" alt="Виктор Уханов читает книгу" width="853" height="1280"></div></figure>
+
+    <section>
+      <h2>Что это такое</h2>
+      <p>Тип привязанности — это привычный способ, которым мы ищем близость и справляемся с ней. Он складывается в детстве, в отношениях с теми, кто о нас заботился, и потом незаметно переносится во взрослую жизнь: в любовь, дружбу, работу.</p>
+      <p>Человек с избегающим типом привязанности рано усвоил, что надёжнее рассчитывать на себя. Его чувства не всегда встречали отклик — и психика нашла выход: меньше нуждаться в других. Во взрослой жизни это выглядит как сильная самостоятельность. А внутри часто живёт напряжение, которое включается именно тогда, когда отношения становятся по-настоящему близкими.</p>
+    </section>
+
+    <section>
+      <h2>Как это проявляется</h2>
+      <ul class="signs">
+        <li><span class="n">i</span><div><b>Близость ощущается как давление</b><span>Чем ближе человек, тем сильнее хочется отойти, взять паузу, «подышать».</span></div></li>
+        <li><span class="n">ii</span><div><b>Чувства — при себе</b><span>О важном проще молчать или говорить с иронией, чем открыто показать, что задело.</span></div></li>
+        <li><span class="n">iii</span><div><b>Просить о помощи трудно</b><span>Кажется, что справиться самому надёжнее, а зависеть от кого-то — опасно.</span></div></li>
+        <li><span class="n">iv</span><div><b>Отношения «на расстоянии» спокойнее</b><span>Легче, когда партнёр далеко или когда в отношениях есть понятные границы и правила.</span></div></li>
+        <li><span class="n">v</span><div><b>Внимание к недостаткам партнёра</b><span>Когда отношения углубляются, особенно заметными становятся чужие минусы — и появляется повод отдалиться.</span></div></li>
+      </ul>
+      <p class="quote">Избегание — не холодность. Чаще это очень ранний и когда-то необходимый способ защитить себя от боли.</p>
+    </section>
+
+    <section>
+      <h2>Чем это не является</h2>
+      <p>Это не диагноз и не черта, с которой человек «рождается». Тип привязанности — не приговор и не ярлык: он описывает привычку, а привычки меняются. Многие люди с избегающим типом строят тёплые долгие отношения — особенно когда начинают замечать свой сценарий и понимать, что за ним стоит.</p>
+      <p>И ещё: в чистом виде типы встречаются редко. Обычно речь о том, какие тенденции сильнее, и они могут меняться в разных отношениях и в разные периоды жизни.</p>
+    </section>
+
+    <section>
+      <h2>Четыре типа привязанности</h2>
+      <p style="margin-bottom:18px">Психологи описывают привязанность двумя осями: насколько мы избегаем близости и насколько тревожимся за отношения.</p>
+      <div class="types" id="types">
+        <div class="type" data-type="secure"><span class="axis">мало избегания · мало тревоги</span><h3>Надёжный</h3><p>Близость и самостоятельность уживаются: можно опереться на другого и остаться собой.</p></div>
+        <div class="type" data-type="anxious"><span class="axis">мало избегания · много тревоги</span><h3>Тревожный</h3><p>Очень важно чувствовать, что ты нужен; страшно, что человек отдалится.</p></div>
+        <div class="type" data-type="avoidant"><span class="axis">много избегания · мало тревоги</span><h3>Избегающий</h3><p>Надёжнее опираться на себя; когда становится слишком близко — хочется дистанции.</p></div>
+        <div class="type" data-type="fearful"><span class="axis">много избегания · много тревоги</span><h3>Тревожно-избегающий</h3><p>Близость одновременно желанна и пугает: хочется опоры, но открываться страшно.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ МИНИ-ТЕСТ ============ -->
+    <div class="quiz" id="test" aria-live="polite">
+      <div id="quiz-start">
+        <span class="eyebrow">Мини-тест · 5 вопросов · 1 минута</span>
+        <h2 style="margin-top:12px">Какой у вас тип привязанности?</h2>
+        <p class="muted" style="margin-top:12px">Отвечайте, как вы обычно чувствуете себя в близких отношениях — с партнёром, семьёй, друзьями. Ответы остаются только в вашем браузере.</p>
+        <button class="btn" id="go" type="button" style="margin-top:22px">Начать</button>
+      </div>
+      <div id="quiz-run" hidden></div>
+      <div id="quiz-result" hidden></div>
+    </div>
+
+    <section>
+      <h2>Что помогает</h2>
+      <ul class="helps">
+        <li><b>Замечать момент, когда хочется отойти.</b> Не бороться с ним, а просто отметить: «вот, стало тесно». Уже это даёт немного свободы выбора.</li>
+        <li><b>Говорить о потребности в пространстве словами.</b> «Мне нужно немного побыть одному, это не про тебя» звучит совсем иначе, чем молчаливое исчезновение.</li>
+        <li><b>Пробовать маленькие шаги открытости.</b> Рассказать о чувстве чуть раньше, чем обычно. Попросить о небольшой помощи.</li>
+        <li><b>Разобраться, откуда сценарий.</b> Понимание того, чему он когда-то служил, часто снимает с него часть силы. Это одна из главных тем в работе с психологом.</li>
+      </ul>
+    </section>
+  </div>
+</article>
+
+<section class="final" id="contact">
+  <div class="in">
+    <div>
+      <span class="eyebrow">Сессия знакомства</span>
+      <h2 style="margin-top:14px;color:var(--card)">Хотите разобраться в своём сценарии?</h2>
+      <p class="voice">Напишите мне — договоримся о первой встрече. Посмотрим, как ваш тип привязанности проявляется именно в вашей жизни и что с этим можно сделать.</p>
+    </div>
+    <div class="btns">
+      <a class="btn" data-write href="https://t.me/uhanovv" target="_blank" rel="noopener">Написать Виктору</a>
+      <a class="btn ghost" href="chekap.html">Пройти полный чекап «Пять граней»</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="in"><span>© Виктор Уханов, практикующий психолог · <a href="index.html">Главная</a> · <a href="chekap.html">Пять граней</a> · <a data-write href="https://t.me/uhanovv" target="_blank" rel="noopener">Написать в Telegram</a></span><span>Мини-тест — ознакомительный, по мотивам опросника ECR-RS (R. C. Fraley). Это не диагностика.</span></div></footer>
+
+<script>
+"use strict";
+const TG = "https://t.me/uhanovv";
+const $ = s => document.querySelector(s);
+const goal = (name, params) => { try { if (typeof window.ym === "function") window.ym(114350995, "reachGoal", name, params); } catch (e) {} };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// 5 утверждений: 3 об избегании близости, 2 о тревоге в отношениях. Ответы 0–3.
+const QS = [
+  { t: "Мне становится некомфортно, когда кто-то слишком сближается со мной", axis: "avoid" },
+  { t: "Свои настоящие чувства я обычно держу при себе", axis: "avoid" },
+  { t: "Мне проще справиться с трудностями в одиночку, чем просить о помощи", axis: "avoid" },
+  { t: "Я часто беспокоюсь, что близкий человек может отдалиться", axis: "anx" },
+  { t: "Мне важно постоянно чувствовать подтверждение, что меня любят", axis: "anx" },
+];
+const OPTS = ["Совсем не про меня", "Скорее нет", "Скорее да", "Точно про меня"];
+const STYLES = {
+  secure: { name: "Надёжный", text: "Похоже, в близких отношениях вы чувствуете себя довольно устойчиво: можете опереться на другого и при этом остаться собой.",
+    tips: ["Это хорошая опора — и для отношений, и для работы над другими темами.", "Интересно посмотреть, в каких отношениях эта устойчивость иногда даёт сбой."] },
+  anxious: { name: "Тревожный", text: "Похоже, в близости вам очень важно чувствовать, что вы нужны, а мысль о том, что человек может отдалиться, бывает очень тревожной.",
+    tips: ["Тревога за отношения часто родом из опыта, где любовь нужно было «заслужить».", "Помогает учиться успокаивать себя не только через подтверждения от другого."] },
+  avoidant: { name: "Избегающий", text: "Похоже, вам надёжнее опираться на себя, а слишком тесная близость вызывает желание отойти и взять паузу.",
+    tips: ["За самостоятельностью часто стоит ранний опыт, когда на других было трудно опереться.", "Помогают маленькие шаги открытости и разговор о потребности в пространстве словами."] },
+  fearful: { name: "Тревожно-избегающий", text: "Похоже, близость для вас одновременно желанна и тревожна: хочется опоры, но открываться страшно.",
+    tips: ["Такое сочетание часто связано с непростым опытом в близких отношениях.", "С этим особенно полезно разбираться вместе со специалистом — спокойно и в своём темпе."] },
+};
+
+let ans = [], i = 0;
+const run = $("#quiz-run"), res = $("#quiz-result");
+
+$("#go").addEventListener("click", () => { goal("mini_start"); $("#quiz-start").hidden = true; run.hidden = false; ans = []; i = 0; render(); });
+
+function render() {
+  run.innerHTML = `
+    <div class="top"><span>Вопрос ${i + 1} из ${QS.length}</span>${i ? '<button class="link" id="back" type="button">← назад</button>' : ""}</div>
+    <div class="progress"><div style="width:${(i / QS.length) * 100}%"></div></div>
+    <div class="q">${esc(QS[i].t)}</div>
+    <div class="opts">${OPTS.map((o, v) => `<button class="opt ${ans[i] === v ? "sel" : ""}" type="button" data-v="${v}">${o}</button>`).join("")}</div>`;
+  run.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => {
+    ans[i] = +b.dataset.v; b.classList.add("sel");
+    setTimeout(() => { if (++i < QS.length) render(); else showResult(); }, 180);
+  }));
+  $("#back")?.addEventListener("click", () => { i--; render(); });
+  $("#test").scrollIntoView({ block: "start" });
+}
+
+function showResult() {
+  const mean = axis => { const v = QS.map((q, k) => q.axis === axis ? ans[k] : null).filter(x => x !== null); return v.reduce((s, x) => s + x, 0) / v.length; };
+  const avoid = mean("avoid"), anx = mean("anx");
+  const key = anx >= 1.5 ? (avoid >= 1.5 ? "fearful" : "anxious") : avoid >= 1.5 ? "avoidant" : "secure";
+  const s = STYLES[key];
+  const level = avoid >= 2.34 ? "выражено сильно" : avoid >= 1.5 ? "выражено заметно" : avoid >= 0.67 ? "выражено слабо" : "почти не выражено";
+  const message = [
+    "Виктор, здравствуйте! Пишу после мини-теста о типе привязанности на вашем сайте.",
+    `Результат: ${s.name.toLowerCase()} тип, избегание близости ${level}.`,
+    "Хочу разобраться в этом на сессии знакомства.",
+  ].join("\n");
+  const tgLink = `${TG}?text=${encodeURIComponent(message)}`;
+
+  // Квадрант: избегание по горизонтали, тревога по вертикали
+  const W = 260, H = 240, x0 = 34, y0 = 10, w = 212, h = 196;
+  const cl = v => Math.min(.92, Math.max(.08, v / 3));
+  const px = x0 + cl(avoid) * w, py = y0 + (1 - cl(anx)) * h;
+  const lab = (x, y, t, on, a) => `<text x="${x}" y="${y}" text-anchor="${a}" style="${on ? "fill:#2d4a43;font-weight:600" : ""}">${t}</text>`;
+  const quad = `<svg class="quad" viewBox="0 0 ${W} ${H + 24}" role="img" aria-label="Ваш тип привязанности: ${esc(s.name)}">
+    <rect x="${x0}" y="${y0}" width="${w}" height="${h}" rx="12" fill="#f2f0eb"/>
+    <line x1="${x0 + w / 2}" y1="${y0}" x2="${x0 + w / 2}" y2="${y0 + h}" stroke="#e0dcd3"/><line x1="${x0}" y1="${y0 + h / 2}" x2="${x0 + w}" y2="${y0 + h / 2}" stroke="#e0dcd3"/>
+    ${lab(x0 + 8, y0 + 16, "Тревожный", key === "anxious", "start")}${lab(x0 + w - 8, y0 + 16, "Тревожно-избег.", key === "fearful", "end")}
+    ${lab(x0 + 8, y0 + h - 8, "Надёжный", key === "secure", "start")}${lab(x0 + w - 8, y0 + h - 8, "Избегающий", key === "avoidant", "end")}
+    <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="13" fill="rgba(45,74,67,.15)"/><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="6" fill="#2d4a43" stroke="#fbfaf7" stroke-width="2"/>
+    <text x="${x0 + w / 2}" y="${H + 16}" text-anchor="middle">избегание близости →</text>
+    <text x="12" y="${y0 + h / 2}" text-anchor="middle" transform="rotate(-90 12 ${y0 + h / 2})">тревога →</text>
+  </svg>`;
+
+  run.hidden = true; res.hidden = false; goal("mini_done");
+  res.innerHTML = `
+    <span class="eyebrow">Ваш результат</span>
+    <div class="result">
+      <div>
+        <span class="tag">избегание близости ${esc(level)}</span>
+        <h3>${esc(s.name)} тип</h3>
+        <p style="margin-top:10px">${esc(s.text)}</p>
+        <ul>${s.tips.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+      </div>
+      ${quad}
+      <div class="cta">
+        <a class="btn" href="${tgLink}" target="_blank" rel="noopener">Написать Виктору</a>
+        <a class="btn ghost" href="chekap.html"><span class="long">Полный чекап «Пять граней»</span><span class="short">Полный чекап</span></a>
+        <button class="link" id="again" type="button" style="align-self:center">пройти заново</button>
+      </div>
+      <p class="cta-note">Откроется чат с Виктором в Telegram — ваш результат уже будет в сообщении. Мини-тест ознакомительный и не заменяет консультацию.</p>
+    </div>`;
+  document.querySelectorAll(".type").forEach(t => t.classList.toggle("me", t.dataset.type === key));
+  document.querySelectorAll("[data-write]").forEach(a => (a.href = tgLink));
+  res.querySelector('a.btn[href*="t.me"]').addEventListener("click", () => goal("mini_write", { place: "result" }));
+  $("#again").addEventListener("click", () => { res.hidden = true; $("#quiz-start").hidden = false; document.querySelectorAll(".type").forEach(t => t.classList.remove("me")); $("#test").scrollIntoView({ block: "start" }); });
+  $("#test").scrollIntoView({ block: "start" });
+}
+document.querySelectorAll("[data-write]").forEach(a => a.addEventListener("click", () => goal("mini_write", { place: a.closest("header") ? "header" : a.closest("footer") ? "footer" : "final" })));
+</script>
+<div id="cookie-note" hidden style="position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;max-width:360px;background:#1e2422;color:#fbfaf7;border-radius:16px;padding:14px 16px;font:13px/1.45 Manrope,-apple-system,'Segoe UI',Roboto,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;gap:12px;align-items:center">
+  <span>Сайт использует cookie и Яндекс Метрику, чтобы считать посещения. Ответы чекапа не передаются. <a href="privacy.html" style="color:#cbd8d2">Подробнее</a></span>
+  <button type="button" id="cookie-ok" style="flex:none;border:0;border-radius:999px;background:#fbfaf7;color:#2d4a43;font:600 13px Manrope,-apple-system,sans-serif;padding:9px 14px;cursor:pointer">Понятно</button>
+</div>
+<script>
+(function () {
+  var note = document.getElementById("cookie-note"), KEY = "vu-cookie-ok";
+  try { if (localStorage.getItem(KEY)) return; } catch (e) {}
+  // над нижней панелью профиля, если она есть
+  var lift = function () { var d = document.querySelector(".dock"); note.style.bottom = d ? "calc(" + (d.offsetHeight + 12) + "px + env(safe-area-inset-bottom,0px))" : "calc(16px + env(safe-area-inset-bottom,0px))"; };
+  note.hidden = false; lift(); setInterval(lift, 1000);
+  document.getElementById("cookie-ok").addEventListener("click", function () { note.remove(); try { localStorage.setItem(KEY, "1"); } catch (e) {} });
+})();
+</script>
+</body>
+</html>
