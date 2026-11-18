@@ -67,18 +67,27 @@ def add_metrika(html, webvisor, notice=True):
 <noscript><div><img src="https://mc.yandex.ru/watch/{METRIKA_ID}" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 """
-    note_html = """<div id="cookie-note" hidden style="position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;max-width:360px;background:#1e2422;color:#fbfaf7;border-radius:16px;padding:14px 16px;font:13px/1.45 Manrope,-apple-system,'Segoe UI',Roboto,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;gap:12px;align-items:center">
+    note_html = """<div id="cookie-note" hidden style="position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;max-width:360px;background:#1e2422;color:#fbfaf7;border-radius:16px;padding:14px 16px;font:13px/1.45 Manrope,-apple-system,'Segoe UI',Roboto,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);gap:12px;align-items:center">
   <span>Сайт использует cookie и Яндекс Метрику, чтобы считать посещения. Ответы чекапа не передаются. <a href="privacy.html" style="color:#cbd8d2">Подробнее</a></span>
   <button type="button" id="cookie-ok" style="flex:none;border:0;border-radius:999px;background:#fbfaf7;color:#2d4a43;font:600 13px Manrope,-apple-system,sans-serif;padding:9px 14px;cursor:pointer">Понятно</button>
 </div>
+<style>#cookie-note{display:none}#cookie-note.on{display:flex}</style>
 <script>
 (function () {
   var note = document.getElementById("cookie-note"), KEY = "vu-cookie-ok";
-  try { if (localStorage.getItem(KEY)) return; } catch (e) {}
+  var seen = false;
+  try { seen = !!localStorage.getItem(KEY); } catch (e) {}
+  if (!seen) seen = document.cookie.indexOf(KEY + "=1") !== -1;
+  if (seen) { note.remove(); return; }
   // над нижней панелью профиля, если она есть
   var lift = function () { var d = document.querySelector(".dock"); note.style.bottom = d ? "calc(" + (d.offsetHeight + 12) + "px + env(safe-area-inset-bottom,0px))" : "calc(16px + env(safe-area-inset-bottom,0px))"; };
-  note.hidden = false; lift(); setInterval(lift, 1000);
-  document.getElementById("cookie-ok").addEventListener("click", function () { note.remove(); try { localStorage.setItem(KEY, "1"); } catch (e) {} });
+  note.hidden = false; note.classList.add("on"); lift();
+  var timer = setInterval(lift, 1000);
+  document.getElementById("cookie-ok").addEventListener("click", function () {
+    clearInterval(timer); note.remove();
+    try { localStorage.setItem(KEY, "1"); } catch (e) {}
+    document.cookie = KEY + "=1; max-age=31536000; path=/; SameSite=Lax";
+  });
 })();
 </script>
 """
