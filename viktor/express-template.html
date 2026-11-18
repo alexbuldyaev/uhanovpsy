@@ -35,6 +35,7 @@ p { margin: 0; }
 .g8 { gap: 8px; } .g12 { gap: 12px; } .g16 { gap: 16px; } .g24 { gap: 24px; } .g40 { gap: 40px; }
 .mono { width: 56px; height: 56px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--pine); color: var(--card); font-family: var(--serif); font-size: 22px; font-style: italic; }
 .mono.sm { width: 36px; height: 36px; font-size: 15px; }
+.mono.ava { object-fit: cover; padding: 0; background: var(--line); box-shadow: 0 0 0 1px var(--line); }
 .who { display: flex; align-items: center; gap: 14px; }
 .btn { appearance: none; border: 0; cursor: pointer; font: 600 16px/1 var(--sans); padding: 18px 26px; border-radius: 999px; background: var(--pine); color: var(--card); transition: transform .15s ease, background .15s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
 .btn:hover { background: #24403a; } .btn:active { transform: scale(.98); }
@@ -214,7 +215,7 @@ body.has-dock { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 <!-- ============ ЗНАКОМСТВО ============ -->
 <section id="intro" class="stack g40">
   <div class="who">
-    <div class="mono">ВУ</div>
+    <img class="mono ava" src="__AVATAR__" alt="Виктор Уханов" width="56" height="56">
     <div class="stack"><span class="eyebrow">Практикующий психолог</span><a href="o-viktore.html" style="font-weight:600;text-decoration:none">Виктор Уханов <span style="color:var(--muted);font-weight:500;font-size:14px">· обо мне →</span></a></div>
   </div>
 
@@ -292,7 +293,7 @@ body.has-dock { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 <section id="chat" hidden>
   <div class="chathead">
     <div class="who" style="gap:10px">
-      <div class="mono sm">ВУ</div>
+      <img class="mono sm ava" src="__AVATAR__" alt="Виктор Уханов" width="36" height="36">
       <div class="stack" style="line-height:1.25"><span style="font-weight:600;font-size:15px">Виктор Уханов</span><span class="muted" style="font-size:12px" id="status">на связи</span></div>
     </div>
     <div class="steps" aria-label="Грани"><i></i><i></i><i></i><i></i><i></i></div>
@@ -793,7 +794,7 @@ function showResult() {
 
   $("#result").innerHTML = `
     <div class="stack g16">
-      <div class="who"><div class="mono">ВУ</div><div class="stack"><span class="eyebrow">Пять граней · ${today}</span><span style="font-weight:600">Виктор Уханов</span></div></div>
+      <div class="who"><img class="mono ava" src="__AVATAR__" alt="Виктор Уханов" width="56" height="56"><div class="stack"><span class="eyebrow">Пять граней · ${today}</span><span style="font-weight:600">Виктор Уханов</span></div></div>
       <h1>${n},<br>ваш профиль</h1>
       <p class="voice" style="max-width:32em">Это не диагноз и не оценка. Скорее набросок портрета: какие черты в вас звучат громче, как вы держитесь в близости, что повторяется и сколько у вас сейчас сил.</p>
     </div>
@@ -898,7 +899,7 @@ function showResult() {
   const dock = document.createElement("div");
   dock.className = "dock"; dock.setAttribute("data-html2canvas-ignore", "");
   dock.innerHTML = `<div class="dock-in">
-    <div class="mono sm">ВУ</div>
+    <img class="mono sm ava" src="__AVATAR__" alt="Виктор Уханов" width="36" height="36">
     <div class="dock-text"><b>Давайте познакомимся</b><span>Напишите Виктору — профиль уже будет в сообщении</span></div>
     <a class="btn ghost" href="o-viktore.html">Обо мне</a>
     <button class="btn ghost pdf-btn" data-send type="button" aria-label="PDF профиля: скачать или отправить">PDF</button>
