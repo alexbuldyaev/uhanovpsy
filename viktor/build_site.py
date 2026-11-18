@@ -49,7 +49,7 @@ about = (here / "o-viktore.html").read_text(encoding="utf-8")
 about = about.replace('href="pyat-granej.html"', 'href="chekap.html"')
 about = about.replace("</title>", "</title>\n" + FAVICON
                       + '\n<meta property="og:title" content="Виктор Уханов — практикующий психолог">'
-                      + '\n<meta property="og:description" content="Сессия знакомства — бесплатно. Экспресс-чекап «Пять граней» за 10 минут.">', 1)
+                      + '\n<meta property="og:description" content="Давайте познакомимся. Экспресс-чекап «Пять граней» за 10 минут.">', 1)
 about = extract_images(about, "about")
 # Отложенная загрузка для всего, что ниже первого экрана (портрет и ярлыки грузятся сразу).
 EAGER = ("Виктор Уханов, портрет", "Octo Modis", "ТВ Центр")
