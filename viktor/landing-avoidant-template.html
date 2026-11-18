@@ -226,6 +226,7 @@ footer .in { display: flex; justify-content: space-between; gap: 12px; flex-wrap
 "use strict";
 const TG = "__TG__";
 const $ = s => document.querySelector(s);
+const goal = (name, params) => { try { if (typeof window.ym === "function") window.ym(114350995, "reachGoal", name, params); } catch (e) {} };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 // 5 утверждений: 3 об избегании близости, 2 о тревоге в отношениях. Ответы 0–3.
@@ -251,7 +252,7 @@ const STYLES = {
 let ans = [], i = 0;
 const run = $("#quiz-run"), res = $("#quiz-result");
 
-$("#go").addEventListener("click", () => { $("#quiz-start").hidden = true; run.hidden = false; ans = []; i = 0; render(); });
+$("#go").addEventListener("click", () => { goal("mini_start"); $("#quiz-start").hidden = true; run.hidden = false; ans = []; i = 0; render(); });
 
 function render() {
   run.innerHTML = `
@@ -295,7 +296,7 @@ function showResult() {
     <text x="12" y="${y0 + h / 2}" text-anchor="middle" transform="rotate(-90 12 ${y0 + h / 2})">тревога →</text>
   </svg>`;
 
-  run.hidden = true; res.hidden = false;
+  run.hidden = true; res.hidden = false; goal("mini_done");
   res.innerHTML = `
     <span class="eyebrow">Ваш результат</span>
     <div class="result">
@@ -315,9 +316,11 @@ function showResult() {
     </div>`;
   document.querySelectorAll(".type").forEach(t => t.classList.toggle("me", t.dataset.type === key));
   document.querySelectorAll("[data-write]").forEach(a => (a.href = tgLink));
+  res.querySelector('a.btn[href*="t.me"]').addEventListener("click", () => goal("mini_write", { place: "result" }));
   $("#again").addEventListener("click", () => { res.hidden = true; $("#quiz-start").hidden = false; document.querySelectorAll(".type").forEach(t => t.classList.remove("me")); $("#test").scrollIntoView({ block: "start" }); });
   $("#test").scrollIntoView({ block: "start" });
 }
+document.querySelectorAll("[data-write]").forEach(a => a.addEventListener("click", () => goal("mini_write", { place: a.closest("header") ? "header" : a.closest("footer") ? "footer" : "final" })));
 </script>
 </body>
 </html>

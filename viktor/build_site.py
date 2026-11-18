@@ -147,6 +147,17 @@ d.rounded_rectangle((70, 430, 388, 492), radius=31, fill=(45, 74, 67))
 d.text((100, 444), "uhanovpsy.ru", font=font(28), fill=(251, 250, 247))
 og.save(site / "img" / "og.jpg", "JPEG", quality=85, optimize=True)
 
+# Статья «Избегающий тип привязанности» с мини-тестом
+import subprocess, sys
+subprocess.run([sys.executable, str(here / "build_landing.py")], check=True, capture_output=True)
+art = (here / "landing-avoidant.html").read_text(encoding="utf-8")
+art = art.replace('href="https://uhanovpsy.ru/chekap.html"', 'href="chekap.html"').replace('href="https://uhanovpsy.ru/"', 'href="index.html"')
+art = art.replace("</title>", "</title>\n" + FAVICON + social("izbegayushchiy-tip.html", "Избегающий тип привязанности — Виктор Уханов",
+                  "Как проявляется избегающий тип привязанности, откуда он берётся и что помогает. Мини-тест из 5 вопросов."), 1)
+art = extract_images(art, "article")
+art = add_metrika(art, webvisor=False)  # ответы мини-теста не записываем
+(site / "izbegayushchiy-tip.html").write_text(art, encoding="utf-8")
+
 (site / "favicon.svg").write_text(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#2d4a43"/>'
     '<text x="32" y="41" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="26" fill="#fbfaf7">ВУ</text></svg>',
