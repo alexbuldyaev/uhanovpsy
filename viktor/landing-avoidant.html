@@ -48,6 +48,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .brand span span { font-size: 12px; color: var(--muted); display: block; line-height: 1.3; }
 .bar .btn { padding: 12px 18px; font-size: 14px; white-space: nowrap; }
 .bar .short { display: none; }
+.nav { display: flex; align-items: center; gap: 18px; }
+.nav .home { font-size: 14px; color: var(--muted); text-decoration: none; }
+.nav .home:hover { color: var(--ink); }
 @media (max-width: 480px) { .bar .long, .brand span span { display: none; } .bar .short { display: inline; } }
 
 /* Article */
@@ -95,14 +98,17 @@ article h2 { margin-bottom: 18px; }
 .result { display: grid; grid-template-columns: 1fr 260px; gap: 24px 36px; align-items: start; }
 .result > * { min-width: 0; }
 .result h3 { font-size: clamp(30px, 4vw, 40px); }
-.result .tag { display: inline-block; font-size: 13px; padding: 6px 12px; border-radius: 999px; background: var(--pine); color: var(--card); margin-bottom: 12px; }
+.result .tag { display: inline-block; font-size: 13px; line-height: 1.35; padding: 6px 12px; border-radius: 12px; background: var(--pine); color: var(--card); margin-bottom: 12px; }
 .result p { color: var(--soft); }
 .result ul { margin: 14px 0 0; padding-left: 20px; color: var(--soft); }
 .result li + li { margin-top: 6px; }
+.quad { display: block; width: 100%; max-width: 280px; margin: 0 auto; }
 .quad text { font: 500 11px var(--sans); fill: var(--muted); }
 .cta { grid-column: 1 / -1; display: flex; gap: 10px; flex-wrap: wrap; padding-top: 18px; border-top: 1px solid var(--line); }
 .cta-note { grid-column: 1 / -1; font-size: 13px; color: var(--muted); margin-top: -8px; }
-@media (max-width: 720px) { .result { grid-template-columns: 1fr; } .quad { max-width: 280px; } }
+@media (max-width: 720px) { .result { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .cta .btn { width: 100%; } .cta .link { margin: 4px auto 0; } .cta .long { display: none; } }
+.cta .short { display: none; } @media (max-width: 560px) { .cta .short { display: inline; } }
 
 /* Final */
 .final { margin-top: 72px; background: var(--pine); color: var(--card); }
@@ -124,7 +130,7 @@ footer .in { display: flex; justify-content: space-between; gap: 12px; flex-wrap
 <header>
   <div class="in bar">
     <a class="brand" href="https://uhanovpsy.ru/"><img class="ava" src="data:image/jpeg;base64,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" alt="Виктор Уханов" width="40" height="40"><span><b>Виктор Уханов</b><span>практикующий психолог</span></span></a>
-    <a class="btn" href="#test"><span class="long">Пройти мини-тест</span><span class="short">Мини-тест</span></a>
+    <nav class="nav"><a class="home" href="https://uhanovpsy.ru/">Главная</a><a class="btn" data-write href="https://t.me/uhanovv" target="_blank" rel="noopener"><span class="long">Написать в Telegram</span><span class="short">Написать</span></a></nav>
   </div>
 </header>
 
@@ -214,7 +220,7 @@ footer .in { display: flex; justify-content: space-between; gap: 12px; flex-wrap
 </section>
 </main>
 
-<footer><div class="in"><span>© Виктор Уханов, практикующий психолог · <a href="https://uhanovpsy.ru/">Обо мне</a></span><span>Мини-тест — ознакомительный, по мотивам опросника ECR-RS (R. C. Fraley). Это не диагностика.</span></div></footer>
+<footer><div class="in"><span>© Виктор Уханов, практикующий психолог · <a href="https://uhanovpsy.ru/">Главная</a> · <a href="https://uhanovpsy.ru/chekap.html">Пять граней</a> · <a data-write href="https://t.me/uhanovv" target="_blank" rel="noopener">Написать в Telegram</a></span><span>Мини-тест — ознакомительный, по мотивам опросника ECR-RS (R. C. Fraley). Это не диагностика.</span></div></footer>
 
 <script>
 "use strict";
@@ -224,11 +230,11 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 
 // 5 утверждений: 3 об избегании близости, 2 о тревоге в отношениях. Ответы 0–3.
 const QS = [
-  { t: "Мне становится некомфортно, когда кто-то слишком сближается со мной.", axis: "avoid" },
-  { t: "Свои настоящие чувства я обычно держу при себе.", axis: "avoid" },
-  { t: "Мне проще справиться с трудностями в одиночку, чем просить о помощи.", axis: "avoid" },
-  { t: "Я часто беспокоюсь, что близкий человек может отдалиться.", axis: "anx" },
-  { t: "Мне важно постоянно чувствовать подтверждение, что меня любят.", axis: "anx" },
+  { t: "Мне становится некомфортно, когда кто-то слишком сближается со мной", axis: "avoid" },
+  { t: "Свои настоящие чувства я обычно держу при себе", axis: "avoid" },
+  { t: "Мне проще справиться с трудностями в одиночку, чем просить о помощи", axis: "avoid" },
+  { t: "Я часто беспокоюсь, что близкий человек может отдалиться", axis: "anx" },
+  { t: "Мне важно постоянно чувствовать подтверждение, что меня любят", axis: "anx" },
 ];
 const OPTS = ["Совсем не про меня", "Скорее нет", "Скорее да", "Точно про меня"];
 const STYLES = {
@@ -302,7 +308,7 @@ function showResult() {
       ${quad}
       <div class="cta">
         <a class="btn" href="${tgLink}" target="_blank" rel="noopener">Написать Виктору</a>
-        <a class="btn ghost" href="https://uhanovpsy.ru/chekap.html">Полный чекап «Пять граней»</a>
+        <a class="btn ghost" href="https://uhanovpsy.ru/chekap.html"><span class="long">Полный чекап «Пять граней»</span><span class="short">Полный чекап</span></a>
         <button class="link" id="again" type="button" style="align-self:center">пройти заново</button>
       </div>
       <p class="cta-note">Откроется чат с Виктором в Telegram — ваш результат уже будет в сообщении. Мини-тест ознакомительный и не заменяет консультацию.</p>
