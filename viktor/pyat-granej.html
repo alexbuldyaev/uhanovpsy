@@ -968,13 +968,16 @@ function downloadFile(file) {
 }
 // Во встроенном браузере вместо PDF предлагаем отправить профиль текстом.
 function openInAppNote(tgLink) {
+  openNoFileNote(tgLink, "Встроенный браузер Telegram не умеет сохранять файлы.", true);
+}
+function openNoFileNote(tgLink, reason, inApp) {
   document.querySelector(".sheet-bg")?.remove();
   const bg = document.createElement("div");
   bg.className = "sheet-bg"; bg.setAttribute("data-html2canvas-ignore", "");
   bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="PDF профиля">
     <span class="eyebrow">PDF профиля</span>
     <h3>Здесь PDF не скачать</h3>
-    <p class="muted small">Встроенный браузер Telegram не умеет сохранять файлы. Отправьте Виктору профиль сообщением — весь результат уже вписан в текст. А чтобы получить PDF, откройте эту страницу в Safari или Chrome: меню «⋯» → «Открыть в браузере».</p>
+    <p class="muted small">${reason} Отправьте Виктору профиль сообщением — весь результат уже вписан в текст.${inApp ? " А чтобы получить PDF, откройте эту страницу в Safari или Chrome: меню «⋯» → «Открыть в браузере»." : ""}</p>
     <a class="btn" href="${tgLink}" target="_blank" rel="noopener">Написать Виктору</a>
     <button class="link" id="close" type="button">Закрыть</button>
   </div>`;
@@ -994,37 +997,49 @@ async function sendToViktor(btn, summary, tgLinkPdf, tgLink) {
   try { file = await makePdf(); } catch (e) { file = null; }
   btn.disabled = false; btn.innerHTML = label;
   if (!file) { toast("Не получилось собрать PDF. Проверьте интернет и попробуйте ещё раз"); return; }
-  openSheet(file, summary, tgLinkPdf);
+  openSheet(file, summary, tgLinkPdf, tgLink);
 }
-// Окно PDF: скачать файл или отправить его Виктору.
-function openSheet(file, summary, tgLinkPdf) {
+// Телефоны и планшеты: файл отдаём только через системное меню «Поделиться» —
+// страница сама никуда не переходит (скачивание по ссылке на телефонах открывает PDF вместо сайта).
+const IS_MOBILE = IS_IOS || (matchMedia("(pointer: coarse)").matches && !matchMedia("(pointer: fine)").matches);
+
+// Окно PDF: на телефоне — «Отправить или сохранить», на компьютере — «Отправить Виктору» и «Скачать».
+function openSheet(file, summary, tgLinkPdf, tgLink) {
+  const canShare = !!(navigator.canShare && navigator.canShare({ files: [file] }));
+  if (IS_MOBILE && !canShare) { openNoFileNote(tgLink, "Этот браузер не умеет сохранять и отправлять файлы."); return; }
   document.querySelector(".sheet-bg")?.remove();
-  const canShare = navigator.canShare && navigator.canShare({ files: [file] });
   const bg = document.createElement("div");
   bg.className = "sheet-bg"; bg.setAttribute("data-html2canvas-ignore", "");
-  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="PDF профиля">
-    <span class="eyebrow">PDF профиля</span>
-    <h3>Скачать или отправить Виктору</h3>
-    <div class="file"><i>PDF</i><div class="stack"><b>${esc(file.name)}</b><span class="muted">${Math.max(1, Math.round(file.size / 1024))} КБ · ваш профиль</span></div></div>
-    ${canShare
-      ? `<button class="btn" id="share" type="button">Отправить Виктору</button>
-         <p class="muted small" style="margin-top:-6px">Откроется меню «Поделиться»: выберите Telegram и чат с Виктором (@uhanovv).</p>`
-      : `<a class="btn" id="send-tg" href="${tgLinkPdf}" target="_blank" rel="noopener">Отправить Виктору</a>
-         <p class="muted small" style="margin-top:-6px">Файл скачается, а чат с Виктором откроется с готовым сообщением — прикрепите к нему файл скрепкой.</p>`}
-    <button class="btn ghost" id="dl" type="button">Скачать</button>
-    <button class="link" id="close" type="button">Закрыть</button>
-  </div>`;
+  const fileRow = `<div class="file"><i>PDF</i><div class="stack"><b>${esc(file.name)}</b><span class="muted">${Math.max(1, Math.round(file.size / 1024))} КБ · ваш профиль</span></div></div>`;
+  bg.innerHTML = IS_MOBILE
+    ? `<div class="sheet" role="dialog" aria-modal="true" aria-label="PDF профиля">
+        <span class="eyebrow">PDF профиля</span>
+        <h3>Отправить Виктору или сохранить</h3>
+        ${fileRow}
+        <button class="btn" id="share" type="button">Отправить или сохранить</button>
+        <p class="muted small" style="margin-top:-6px">Откроется меню «Поделиться»: выберите Telegram и чат с Виктором (@uhanovv) — или «Сохранить в Файлы».</p>
+        <button class="link" id="close" type="button">Закрыть</button>
+      </div>`
+    : `<div class="sheet" role="dialog" aria-modal="true" aria-label="PDF профиля">
+        <span class="eyebrow">PDF профиля</span>
+        <h3>Скачать или отправить Виктору</h3>
+        ${fileRow}
+        <a class="btn" id="send-tg" href="${tgLinkPdf}" target="_blank" rel="noopener">Отправить Виктору</a>
+        <p class="muted small" style="margin-top:-6px">Файл скачается, а чат с Виктором откроется с готовым сообщением — прикрепите к нему файл.</p>
+        <button class="btn ghost" id="dl" type="button">Скачать</button>
+        <button class="link" id="close" type="button">Закрыть</button>
+      </div>`;
   document.body.append(bg);
   const close = () => bg.remove();
   bg.addEventListener("click", e => { if (e.target === bg) close(); });
   $("#close").addEventListener("click", close);
-  $("#dl").addEventListener("click", () => { downloadFile(file); toast("PDF сохранён"); });
-  if (canShare) {
+  if (IS_MOBILE) {
     $("#share").addEventListener("click", async () => {
-      try { await navigator.share({ files: [file], title: "Пять граней", text: summary }); close(); toast("Спасибо! Виктор ответит в Telegram"); }
-      catch (e) { if (e.name !== "AbortError") { downloadFile(file); toast("Не получилось поделиться — PDF сохранён, отправьте его Виктору"); } }
+      try { await navigator.share({ files: [file], title: "Пять граней", text: summary }); close(); toast("Готово"); }
+      catch (e) { if (e.name !== "AbortError") openNoFileNote(tgLink, "Не получилось открыть меню «Поделиться»."); }
     });
   } else {
+    $("#dl").addEventListener("click", () => { downloadFile(file); toast("PDF сохранён"); });
     $("#send-tg").addEventListener("click", () => { downloadFile(file); });
   }
 }
