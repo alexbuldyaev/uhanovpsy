@@ -334,6 +334,12 @@ footer .in { display: flex; justify-content: space-between; gap: 16px; flex-wrap
 const head = document.querySelector("header");
 const onScroll = () => head.classList.toggle("scrolled", scrollY > 8);
 addEventListener("scroll", onScroll, { passive: true }); onScroll();
+// Яндекс Метрика: цели для кнопок
+const goal = (name, params) => { try { if (typeof window.ym === "function") window.ym(114350995, "reachGoal", name, params); } catch (e) {} };
+const where = el => el.closest("header") ? "header" : el.closest(".final") ? "final" : el.closest(".hero") ? "hero" : el.closest("footer") ? "footer" : "other";
+document.querySelectorAll('a[href^="https://t.me/uhanovv"]').forEach(a => a.addEventListener("click", () => goal("write_viktor_main", { place: where(a) })));
+document.querySelectorAll('a[href^="https://t.me/Uhanovpsy"]').forEach(a => a.addEventListener("click", () => goal("channel_click", { place: where(a) })));
+document.querySelectorAll('a[href="chekap.html"], a[href="pyat-granej.html"], a[href="pyat-granej.html"]').forEach(a => a.addEventListener("click", () => goal("go_chekap", { place: where(a) })));
 // Просмотр документов
 const lb = document.getElementById("lb");
 document.querySelectorAll(".thumb").forEach(t => t.addEventListener("click", () => {

@@ -48,6 +48,44 @@ DOMAIN = "uhanovpsy.ru"
 SITE_URL = f"https://{DOMAIN}/"
 
 
+METRIKA_ID = 114350995
+
+
+def add_metrika(html, webvisor, notice=True):
+    """Счётчик Яндекс Метрики и короткое уведомление об использовании cookie."""
+    opts = f"ssr:true, webvisor:{'true' if webvisor else 'false'}, clickmap:{'true' if webvisor else 'false'}, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true"
+    counter = f"""<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){{
+        m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {{if (document.scripts[j].src === r) {{ return; }}}}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    }})(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id={METRIKA_ID}', 'ym');
+    ym({METRIKA_ID}, 'init', {{{opts}}});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/{METRIKA_ID}" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+"""
+    note_html = """<div id="cookie-note" hidden style="position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;max-width:360px;background:#1e2422;color:#fbfaf7;border-radius:16px;padding:14px 16px;font:13px/1.45 Manrope,-apple-system,'Segoe UI',Roboto,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;gap:12px;align-items:center">
+  <span>Сайт использует cookie и Яндекс Метрику, чтобы считать посещения. Ответы чекапа не передаются. <a href="privacy.html" style="color:#cbd8d2">Подробнее</a></span>
+  <button type="button" id="cookie-ok" style="flex:none;border:0;border-radius:999px;background:#fbfaf7;color:#2d4a43;font:600 13px Manrope,-apple-system,sans-serif;padding:9px 14px;cursor:pointer">Понятно</button>
+</div>
+<script>
+(function () {
+  var note = document.getElementById("cookie-note"), KEY = "vu-cookie-ok";
+  try { if (localStorage.getItem(KEY)) return; } catch (e) {}
+  // над нижней панелью профиля, если она есть
+  var lift = function () { var d = document.querySelector(".dock"); note.style.bottom = d ? "calc(" + (d.offsetHeight + 12) + "px + env(safe-area-inset-bottom,0px))" : "calc(16px + env(safe-area-inset-bottom,0px))"; };
+  note.hidden = false; lift(); setInterval(lift, 1000);
+  document.getElementById("cookie-ok").addEventListener("click", function () { note.remove(); try { localStorage.setItem(KEY, "1"); } catch (e) {} });
+})();
+</script>
+"""
+    html = html.replace("</head>", counter + "</head>", 1)
+    return html.replace("</body>", note_html + "</body>", 1) if notice else html
+
+
 def social(path, title, desc):
     """Карточка ссылки для Telegram, VK и других соцсетей."""
     return "".join([
@@ -70,6 +108,7 @@ about = extract_images(about, "about")
 # Отложенная загрузка для всего, что ниже первого экрана (портрет и ярлыки грузятся сразу).
 EAGER = ("Виктор Уханов, портрет", "Octo Modis", "ТВ Центр")
 about = re.sub(r'<img (src="img/[^"]+" alt="([^"]*)")', lambda m: m.group(0) if m.group(2).startswith(EAGER) else f'<img loading="lazy" decoding="async" {m.group(1)}', about)
+about = add_metrika(about, webvisor=True)
 (site / "index.html").write_text(about, encoding="utf-8")
 
 chekap = (here / "pyat-granej.html").read_text(encoding="utf-8")
@@ -77,9 +116,11 @@ chekap = chekap.replace('href="o-viktore.html"', 'href="index.html"')
 chekap = chekap.replace("</title>", "</title>\n" + FAVICON
                         + social("chekap.html", "«Пять граней» — экспресс-чекап Виктора Уханова", "Пять граней личности за 10 минут: архетип, привязанность, сценарии, ресурс и состояние."), 1)
 chekap = extract_images(chekap, "chekap")
+# На чекапе запись сеанса и карта кликов выключены: они показали бы выбранные ответы.
+chekap = add_metrika(chekap, webvisor=False, notice=False)  # про cookie сказано на стартовом экране чекапа
 (site / "chekap.html").write_text(chekap, encoding="utf-8")
 
-shutil.copy(here / "privacy.html", site / "privacy.html")
+(site / "privacy.html").write_text(add_metrika((here / "privacy.html").read_text(encoding="utf-8"), webvisor=True), encoding="utf-8")
 
 # Свой домен для GitHub Pages
 (site / "CNAME").write_text(DOMAIN + "\n", encoding="utf-8")
