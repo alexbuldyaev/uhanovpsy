@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Пять граней — экспресс-чекап</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600&display=swap">
+<style>
+/* Layout: one calm reading column on linen paper; the final profile widens into a two-column dashboard. */
+:root {
+  --paper: #f2f0eb; --card: #fbfaf7; --ink: #1e2422; --muted: #6c726d; --line: #e0dcd3;
+  --pine: #2d4a43; --pine-soft: #e3e9e5; --sand: #cdbfa8; --mist: #8fa3ad; --alert: #9a3b2f;
+  --serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  --sans: "Manrope", "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r: 18px; color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 640px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.wrap.wide { max-width: 980px; }
+[hidden] { display: none !important; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; text-wrap: balance; margin: 0; font-variant-numeric: lining-nums; }
+h1 { font-size: clamp(40px, 9vw, 58px); line-height: 1.02; }
+h2 { font-size: clamp(30px, 6.4vw, 40px); line-height: 1.1; }
+h3 { font-size: 24px; line-height: 1.2; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.voice { font-family: var(--serif); font-style: italic; font-size: 23px; line-height: 1.4; font-variant-numeric: lining-nums; }
+.muted { color: var(--muted); } .small { font-size: 14px; }
+.stack { display: flex; flex-direction: column; }
+.g8 { gap: 8px; } .g12 { gap: 12px; } .g16 { gap: 16px; } .g24 { gap: 24px; } .g40 { gap: 40px; }
+.mono { width: 56px; height: 56px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--pine); color: var(--card); font-family: var(--serif); font-size: 22px; font-style: italic; }
+.mono.sm { width: 36px; height: 36px; font-size: 15px; }
+.who { display: flex; align-items: center; gap: 14px; }
+.btn { appearance: none; border: 0; cursor: pointer; font: 600 16px/1 var(--sans); padding: 18px 26px; border-radius: 999px; background: var(--pine); color: var(--card); transition: transform .15s ease, background .15s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.btn:hover { background: #24403a; } .btn:active { transform: scale(.98); }
+.btn.ghost { background: transparent; color: var(--pine); box-shadow: inset 0 0 0 1px var(--pine); }
+.btn.ghost:hover { background: var(--pine-soft); }
+.btn:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 2px solid var(--pine); outline-offset: 3px; }
+.link { background: none; border: 0; color: var(--muted); font: 500 14px var(--sans); cursor: pointer; padding: 8px 0; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Intro: framework */
+.frame { background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 28px 24px; display: flex; flex-direction: column; gap: 22px; }
+.penta { width: 100%; max-width: 360px; align-self: center; }
+.penta text { font-family: var(--serif); font-size: 17px; fill: var(--ink); }
+.penta .num { font-family: var(--sans); font-size: 10px; fill: var(--muted); letter-spacing: .1em; }
+.facets { display: flex; flex-direction: column; }
+.facet { display: grid; grid-template-columns: 34px 1fr auto; gap: 2px 12px; padding-block: 14px; border-top: 1px solid var(--line); align-items: baseline; }
+.facet .n { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--sand); line-height: 1; }
+.facet b { font-family: var(--serif); font-size: 22px; font-weight: 500; }
+.facet .cnt { font-size: 12px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.facet p { grid-column: 2 / 4; font-size: 14px; color: var(--muted); }
+.facet .src { grid-column: 2 / 4; font-size: 12px; color: var(--sand); }
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.kpi b { display: block; font-family: var(--serif); font-size: 40px; font-weight: 500; line-height: 1; font-variant-numeric: lining-nums; }
+.kpi span { font-size: 13px; color: var(--muted); }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label { font-size: 13px; color: var(--muted); }
+.input { font: 500 18px var(--sans); padding: 16px 18px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink); width: 100%; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px; }
+.seg button { border: 0; background: transparent; padding: 12px 8px; border-radius: 10px; font: 500 15px var(--sans); color: var(--muted); cursor: pointer; }
+.consent { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; font-size: 13px; line-height: 1.5; color: var(--muted); cursor: pointer; }
+.consent input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--pine); cursor: pointer; }
+.consent a { color: var(--pine); }
+.seg button[aria-pressed="true"] { background: var(--pine); color: var(--card); }
+
+/* Chat */
+.chathead { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(10px); padding-block: 14px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.steps { display: flex; gap: 5px; }
+.steps i { width: 20px; height: 4px; border-radius: 2px; background: var(--line); }
+.steps i.on { background: var(--pine); } .steps i.done { background: var(--sand); }
+.thread { display: flex; flex-direction: column; gap: 10px; padding-block: 24px 8px; }
+.msg { max-width: 86%; padding: 14px 18px; border-radius: 20px; animation: rise .35s ease both; }
+.msg.v { background: var(--card); border: 1px solid var(--line); border-bottom-left-radius: 6px; align-self: flex-start; font-family: var(--serif); font-size: 21px; line-height: 1.38; font-variant-numeric: lining-nums; }
+.msg.u { background: var(--pine); color: var(--card); border-bottom-right-radius: 6px; align-self: flex-end; font-size: 15px; }
+.msg.badge { align-self: center; background: transparent; border: 1px dashed var(--sand); color: var(--muted); font-size: 13px; letter-spacing: .04em; padding: 8px 14px; border-radius: 999px; text-align: center; }
+.typing { display: inline-flex; gap: 5px; align-items: center; height: 22px; }
+.typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); opacity: .4; animation: blink 1.1s infinite; }
+.typing span:nth-child(2) { animation-delay: .15s; } .typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 50% { opacity: 1; } }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; padding-block: 8px; }
+.deck { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 16px; animation: rise .35s ease both; scroll-margin-top: 90px; }
+.deck .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+.deck .hint-top { font-size: 13px; color: var(--muted); }
+.bar { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.bar > div { height: 100%; background: var(--pine); transition: width .25s ease; }
+.q { font-family: var(--serif); font-size: 25px; line-height: 1.3; min-height: 2.6em; font-variant-numeric: lining-nums; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opt { appearance: none; text-align: left; cursor: pointer; font: 400 15px/1.4 var(--sans); color: var(--ink); padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--paper); transition: border-color .12s ease, background .12s ease; }
+.opt:hover { border-color: var(--sand); }
+.opt.sel { border-color: var(--pine); background: var(--pine-soft); }
+.scale { display: grid; gap: 6px; }
+.scale .opt { text-align: center; padding: 14px 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.scale-legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); gap: 12px; }
+.scale-hint { font-size: 13px; color: var(--muted); min-height: 1.4em; text-align: center; }
+
+/* Profile */
+.portrait { display: flex; flex-direction: column; gap: 44px; }
+.overview { display: flex; flex-direction: column; gap: 18px; padding-block: 28px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.overview-text { font-family: var(--serif); font-size: 25px; line-height: 1.42; font-weight: 500; font-variant-numeric: lining-nums; max-width: 34em; }
+.overview-text::first-letter { font-size: 3.1em; float: left; line-height: .82; padding: 6px 10px 0 0; color: var(--pine); }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags span { font-size: 14px; padding: 7px 13px; border-radius: 999px; background: var(--pine); color: var(--card); }
+.tags span.alt { background: var(--card); color: var(--pine); box-shadow: inset 0 0 0 1px var(--line); }
+.dash { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.tile.span2 { grid-column: 1 / -1; }
+.tile .head { display: flex; flex-direction: column; gap: 4px; }
+.tile .note { font-size: 14px; color: var(--muted); }
+.arch { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto); grid-auto-flow: column; gap: 6px 28px; }
+.sc { display: grid; grid-template-columns: minmax(0, 7.5em) 1fr 2.6em; gap: 12px; align-items: center; font-size: 14px; }
+.sc span:first-child { color: var(--muted); }
+.sc.hi span:first-child { color: var(--ink); font-weight: 600; }
+.sc .v { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 12px; }
+.track { position: relative; height: 6px; border-radius: 3px; background: var(--line); }
+.track > div { position: absolute; inset: 0 auto 0 0; border-radius: 3px; background: var(--sand); }
+.sc.hi .track > div { background: var(--pine); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.pair div { min-width: 0; }
+.pair b { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
+.quad { width: 100%; max-width: 300px; align-self: center; }
+.quad text { font: 500 11px var(--sans); fill: var(--muted); }
+.trap { display: grid; grid-template-columns: 14px 1fr; gap: 2px 12px; padding-block: 10px; border-top: 1px solid var(--line); }
+.trap:first-child { border-top: 0; }
+.trap .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 8px; }
+.dot.s { background: var(--pine); } .dot.m { box-shadow: inset 0 0 0 2px var(--pine); }
+.trap b { font-family: var(--serif); font-size: 20px; font-weight: 500; }
+.trap p { grid-column: 2; font-size: 13px; color: var(--muted); }
+.ring { display: flex; align-items: center; gap: 18px; }
+.ring svg { width: 112px; height: 112px; flex: none; }
+.meter { display: flex; flex-direction: column; gap: 6px; }
+.meter .row { display: flex; justify-content: space-between; font-size: 14px; }
+.meter .row span:last-child { color: var(--muted); }
+.gauge { position: relative; height: 8px; border-radius: 999px; background: linear-gradient(90deg, #cfdad3, #d9d3c4 45%, #d8bfb3 75%, #c9a59a); }
+.gauge i { position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%; background: var(--card); border: 3px solid var(--pine); transform: translate(-50%, -50%); }
+.qs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.qs li { font-family: var(--serif); font-size: 23px; line-height: 1.35; padding-left: 28px; position: relative; }
+.qs li::before { content: "—"; position: absolute; left: 0; color: var(--sand); }
+.crisis { border: 1px solid var(--alert); border-radius: var(--r); padding: 20px; background: #fbf4f1; display: flex; flex-direction: column; gap: 10px; }
+.crisis b { color: var(--alert); }
+.phones { display: flex; flex-direction: column; gap: 4px; font-variant-numeric: tabular-nums; }
+.phones b { white-space: nowrap; }
+.invite { background: var(--pine); color: var(--card); border-radius: 26px; padding: 34px 28px; display: flex; flex-direction: column; gap: 22px; }
+.invite .voice { color: var(--card); }
+.invite .eyebrow { color: #b7c6bf; }
+.invite .btn { background: var(--card); color: var(--pine); align-self: flex-start; }
+.invite .btn:hover { background: #fff; }
+.agenda { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.agenda li { border-top: 1px solid rgba(255,255,255,.25); padding-top: 12px; font-size: 14px; color: #dfe7e3; }
+.agenda li b { display: block; font-family: var(--serif); font-size: 21px; font-weight: 500; color: var(--card); margin-bottom: 4px; }
+.qrrow { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.qr { width: 132px; height: 132px; background: var(--card); border-radius: 14px; padding: 10px; flex: none; }
+.qr svg { width: 100%; height: 100%; display: block; }
+.qr path { fill: var(--pine); }
+.handle { font-family: var(--serif); font-size: 30px; font-style: italic; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.toast { position: fixed; left: 50%; bottom: calc(100px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--card); padding: 12px 18px; border-radius: 999px; font-size: 14px; z-index: 40; text-align: center; max-width: calc(100% - 32px); }
+footer { font-size: 12px; color: var(--muted); line-height: 1.55; }
+/* Закреплённая панель на странице профиля */
+body.has-dock { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--line);
+  padding-block: 12px calc(12px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.dock-in { max-width: 980px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+.dock-text { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; flex: 1; }
+.dock-text b { font-size: 15px; } .dock-text span { font-size: 13px; color: var(--muted); }
+.dock .btn { padding: 15px 22px; white-space: nowrap; }
+.dock .sos { font-size: 13px; color: var(--alert); text-decoration: none; white-space: nowrap; font-weight: 600; }
+.dock .short { display: none; }
+.dock .pdf-btn { padding: 15px 16px; flex: none; }
+.invite-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.invite .btn.ghost-light { background: transparent; color: var(--card); box-shadow: inset 0 0 0 1px rgba(255,255,255,.45); align-self: auto; }
+.invite .btn.ghost-light:hover { background: rgba(255,255,255,.08); }
+@media (max-width: 560px) { .dock-text, .dock .mono { display: none; } .dock .btn { flex: 1; min-width: 0; padding-inline: 14px; } .dock .pdf-btn { flex: none; } .dock .long { display: none; } .dock .short { display: inline; } }
+.sheet-bg { position: fixed; inset: 0; z-index: 30; background: rgba(30,36,34,.45); display: grid; align-items: end; justify-items: center; }
+.sheet { width: 100%; max-width: 520px; background: var(--card); border-radius: 26px 26px 0 0; display: flex; flex-direction: column; gap: 16px;
+  padding-block: 26px calc(26px + env(safe-area-inset-bottom, 0px)); padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 640px) { .sheet-bg { align-items: center; } .sheet { border-radius: 26px; } }
+.sheet ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+.sheet .file { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; font-size: 14px; }
+.sheet .file i { width: 34px; height: 42px; border-radius: 6px; background: var(--pine); color: var(--card); display: grid; place-items: center; font: 600 10px var(--sans); font-style: normal; flex: none; }
+@media (max-width: 720px) {
+  .dash { grid-template-columns: 1fr; }
+  .arch { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; }
+  .agenda { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .pair { grid-template-columns: 1fr; gap: 8px; }
+  .deck { padding: 18px; } .q { font-size: 23px; }
+  .overview-text { font-size: 23px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
+@media print {
+  body { background: #fff; }
+  .dock, .sheet-bg { display: none !important; }
+  #intro, #chat, .actions, .invite .btn, .toast { display: none !important; }
+  #result { display: flex !important; }
+  .tile { break-inside: avoid; }
+  .invite { color: var(--ink); background: #fff; border: 1px solid var(--line); }
+  .invite .voice, .invite .eyebrow, .agenda li, .agenda li b { color: var(--ink); }
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+
+<!-- ============ ЗНАКОМСТВО ============ -->
+<section id="intro" class="stack g40">
+  <div class="who">
+    <div class="mono">ВУ</div>
+    <div class="stack"><span class="eyebrow">Практикующий психолог</span><a href="o-viktore.html" style="font-weight:600;text-decoration:none">Виктор Уханов <span style="color:var(--muted);font-weight:500;font-size:14px">· обо мне →</span></a></div>
+  </div>
+
+  <div class="stack g16">
+    <h1>Здравствуйте.<br>Меня зовут Виктор.</h1>
+    <p class="voice">Спасибо, что нашли время. Я хочу предложить вам небольшое путешествие к себе — авторский экспресс-чекап, с которого я люблю начинать знакомство.</p>
+  </div>
+
+  <div class="frame">
+    <div class="stack g8">
+      <span class="eyebrow">Авторский формат</span>
+      <h2>Пять граней</h2>
+      <p>За десять минут мы вместе пройдём пять ключевых граней личности — от характера до того, как вы чувствуете себя прямо сейчас. В конце вы получите свой профиль: ведущий архетип, стиль привязанности, жизненные сценарии и ресурс.</p>
+    </div>
+    <svg class="penta" viewBox="-36 0 392 290" role="img" aria-label="Пять граней: характер, отношения, сценарии, ресурс, состояние">
+      <polygon points="160,52 254,120 218,232 102,232 66,120" fill="#e3e9e5" stroke="#2d4a43" stroke-width="1.2"/>
+      <polygon points="160,98 210,134 191,192 129,192 110,134" fill="none" stroke="#cdbfa8" stroke-dasharray="3 4"/>
+      <g stroke="#e0dcd3"><line x1="160" y1="150" x2="160" y2="52"/><line x1="160" y1="150" x2="254" y2="120"/><line x1="160" y1="150" x2="218" y2="232"/><line x1="160" y1="150" x2="102" y2="232"/><line x1="160" y1="150" x2="66" y2="120"/></g>
+      <g fill="#2d4a43"><circle cx="160" cy="52" r="5"/><circle cx="254" cy="120" r="5"/><circle cx="218" cy="232" r="5"/><circle cx="102" cy="232" r="5"/><circle cx="66" cy="120" r="5"/></g>
+      <text x="160" y="155" text-anchor="middle" font-style="italic" style="font-size:20px">вы</text>
+      <text class="num" x="160" y="22" text-anchor="middle">I</text><text x="160" y="40" text-anchor="middle">Характер</text>
+      <text class="num" x="268" y="106" text-anchor="start">II</text><text x="268" y="124" text-anchor="start">Отношения</text>
+      <text class="num" x="236" y="258" text-anchor="middle">III</text><text x="236" y="276" text-anchor="middle">Сценарии</text>
+      <text class="num" x="84" y="258" text-anchor="middle">IV</text><text x="84" y="276" text-anchor="middle">Ресурс</text>
+      <text class="num" x="52" y="106" text-anchor="end">V</text><text x="52" y="124" text-anchor="end">Состояние</text>
+    </svg>
+    <div class="facets">
+      <div class="facet"><span class="n">i</span><b>Характер</b><span class="cnt">20–29 вопр.</span>
+        <p>Ваш темперамент и черты, которые ведут вас по жизни. На выходе — ваш архетип.</p>
+        <span class="src">авторская методика по мотивам типологии К. Леонгарда</span></div>
+      <div class="facet"><span class="n">ii</span><b>Отношения</b><span class="cnt">9 вопр.</span>
+        <p>Как вы чувствуете себя в близости: ваш стиль привязанности.</p>
+        <span class="src">по опроснику ECR-RS (R. C. Fraley)</span></div>
+      <div class="facet"><span class="n">iii</span><b>Сценарии</b><span class="cnt">11–22 вопр.</span>
+        <p>Какие жизненные ловушки повторяются у вас раз за разом.</p>
+        <span class="src">по опроснику жизненных ловушек Дж. Янга</span></div>
+      <div class="facet"><span class="n">iv</span><b>Ресурс</b><span class="cnt">5 вопр.</span>
+        <p>Сколько у вас сейчас сил, радости и энергии.</p>
+        <span class="src">индекс благополучия ВОЗ (WHO-5)</span></div>
+      <div class="facet"><span class="n">v</span><b>Состояние</b><span class="cnt">5–21 вопр.</span>
+        <p>Настроение и тревога за последние две недели — и из чего складывается ваша тревога.</p>
+        <span class="src">PHQ-4 с уточнением по PHQ-9 и экспресс-версии Интегративного теста тревожности</span></div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b>≈ 10</b><span>минут</span></div>
+      <div class="kpi"><b>5</b><span>граней личности</span></div>
+      <div class="kpi"><b>1</b><span>личный профиль</span></div>
+    </div>
+    <p class="muted small">Вопросов становится больше только там, где ваши ответы стоит уточнить. Ответы никуда не отправляются и остаются у вас на устройстве.</p>
+  </div>
+
+  <div class="stack g16">
+    <div class="field">
+      <label for="name">Как к вам обращаться?</label>
+      <input id="name" class="input" autocomplete="given-name" placeholder="Ваше имя" maxlength="40">
+    </div>
+    <div class="field">
+      <label id="g-label">Формулировки вопросов</label>
+      <div class="seg" role="group" aria-labelledby="g-label">
+        <button type="button" id="g-f" data-g="f" aria-pressed="false">в женском роде</button>
+        <button type="button" id="g-m" data-g="m" aria-pressed="false">в мужском роде</button>
+      </div>
+    </div>
+    <label class="consent" for="consent">
+      <input type="checkbox" id="consent">
+      <span>Я даю согласие на обработку моих персональных данных, включая сведения о состоянии здоровья, в соответствии с Федеральным законом № 152-ФЗ «О персональных данных» и <a href="privacy.html" target="_blank" rel="noopener">Политикой обработки персональных данных</a>.</span>
+    </label>
+    <button class="btn" id="start" disabled>Начать чекап</button>
+    <button class="link" id="resume" hidden></button>
+    <p class="muted small">Это не диагностика, а повод для разговора.</p>
+  </div>
+</section>
+
+<!-- ============ ЧАТ ============ -->
+<section id="chat" hidden>
+  <div class="chathead">
+    <div class="who" style="gap:10px">
+      <div class="mono sm">ВУ</div>
+      <div class="stack" style="line-height:1.25"><span style="font-weight:600;font-size:15px">Виктор Уханов</span><span class="muted" style="font-size:12px" id="status">на связи</span></div>
+    </div>
+    <div class="steps" aria-label="Грани"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="thread" id="thread" aria-live="polite"></div>
+  <div id="chips" class="chips"></div>
+  <div id="deck"></div>
+</section>
+
+<!-- ============ ПРОФИЛЬ ============ -->
+<section id="result" class="portrait" hidden></section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script type="application/json" id="methods">{"lt": {"m": ["Я привязан к близким людям, потому что боюсь, что они меня бросят.", "Я сильно переживаю, что любимые люди найдут кого-то другого и бросят меня.", "Я обычно думаю о том, какие внутренние мотивы движут людьми; мне непросто доверять людям.", "Мне кажется, что с людьми всегда нужно быть начеку, иначе они могут причинить мне боль.", "Я сильнее других переживаю из-за опасностей – что я заболею или мне будет причинен какой-либо вред.", "Я боюсь, что я (или моя семья) останусь без денег и буду испытывать сильную нужду или начну зависеть от других.", "Мне кажется, что я с трудом смогу жить самостоятельно, и я чувствую, что мне нужна помощь других людей.", "Я и мои родители были склонны слишком сильно углубляться в проблемы друг друга.", "В моей жизни не было человека, который заботился бы обо мне, уделял мне время или серьезно переживал о том, что со мной происходит.", "Люди не удовлетворяли моих эмоциональных потребностей в понимании, сочувствии, наставлении, советах и поддержке.", "Мне кажется, что мне нигде нет места. Я не такой, как все. Я никуда не вписываюсь.", "Я скучный и занудный; я не знаю, о чем разговаривать с людьми.", "Те, кто мне нравится, никогда не любили меня настоящего, со всеми моими недостатками.", "Я стыжусь себя; я не заслуживаю любви, внимания и уважения других.", "Я не такой умный или умелый, как большинство людей, когда дело касается работы.", "Я часто чувствую себя неполноценным, потому что другие люди талантливее, умнее и успешнее меня.", "Мне кажется, что у меня нет выбора – нужно выполнять желания других людей, иначе они отомстят или каким-то образом отвергнут меня.", "Люди считают, что я делаю слишком много для других и недостаточно для себя.", "Я стремлюсь к идеалу; средний результат меня не устроит. Я хочу быть лучше всех в своем деле.", "Мне нужно столько сделать, что у меня почти нет времени расслабиться и по-настоящему повеселиться.", "Я считаю, что мне не нужно подчиняться правилам и нормам, как другим людям.", "Мне не хватает дисциплины, чтобы выполнять рутинные, скучные задачи или контролировать свои эмоции."], "f": ["Я привязана к близким людям, потому что боюсь, что они меня бросят.", "Я сильно переживаю, что любимые люди найдут кого-то другого и бросят меня.", "Я обычно думаю о том, какие внутренние мотивы движут людьми; мне непросто доверять людям.", "Мне кажется, что с людьми всегда нужно быть начеку, иначе они могут причинить мне боль.", "Я сильнее других переживаю из-за опасностей – что я заболею или мне будет причинен какой-либо вред.", "Я боюсь, что я (или моя семья) останусь без денег и буду испытывать сильную нужду или начну зависеть от других.", "Мне кажется, что я с трудом смогу жить самостоятельно, и я чувствую, что мне нужна помощь других людей.", "Я и мои родители были склонны слишком сильно углубляться в проблемы друг друга.", "В моей жизни не было человека, который заботился бы обо мне, уделял мне время или серьезно переживал о том, что со мной происходит.", "Люди не удовлетворяли моих эмоциональных потребностей в понимании, сочувствии, наставлении, советах и поддержке.", "Мне кажется, что мне нигде нет места. Я не такая, как все. Я никуда не вписываюсь.", "Я скучная и занудная; я не знаю, о чем разговаривать с людьми.", "Те, кто мне нравится, никогда не любили меня настоящую, со всеми моими недостатками.", "Я стыжусь себя; я не заслуживаю любви, внимания и уважения других.", "Я не такая умная или умелая, как большинство людей, когда дело касается работы.", "Я часто чувствую себя неполноценной, потому что другие люди талантливее, умнее и успешнее меня.", "Мне кажется, что у меня нет выбора – нужно выполнять желания других людей, иначе они отомстят или каким-то образом отвергнут меня.", "Люди считают, что я делаю слишком много для других и недостаточно для себя.", "Я стремлюсь к идеалу; средний результат меня не устроит. Я хочу быть лучше всех в своем деле.", "Мне нужно столько сделать, что у меня почти нет времени расслабиться и по-настоящему повеселиться.", "Я считаю, что мне не нужно подчиняться правилам и нормам, как другим людям.", "Мне не хватает дисциплины, чтобы выполнять рутинные, скучные задачи или контролировать свои эмоции."]}}</script>
+<template id="qr-tpl"><svg version="1.1" viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg"><path d="M1,1H2V2H1zM2,1H3V2H2zM3,1H4V2H3zM4,1H5V2H4zM5,1H6V2H5zM6,1H7V2H6zM7,1H8V2H7zM11,1H12V2H11zM13,1H14V2H13zM15,1H16V2H15zM19,1H20V2H19zM20,1H21V2H20zM21,1H22V2H21zM22,1H23V2H22zM23,1H24V2H23zM24,1H25V2H24zM25,1H26V2H25zM1,2H2V3H1zM7,2H8V3H7zM9,2H10V3H9zM10,2H11V3H10zM11,2H12V3H11zM14,2H15V3H14zM15,2H16V3H15zM19,2H20V3H19zM25,2H26V3H25zM1,3H2V4H1zM3,3H4V4H3zM4,3H5V4H4zM5,3H6V4H5zM7,3H8V4H7zM9,3H10V4H9zM11,3H12V4H11zM12,3H13V4H12zM15,3H16V4H15zM17,3H18V4H17zM19,3H20V4H19zM21,3H22V4H21zM22,3H23V4H22zM23,3H24V4H23zM25,3H26V4H25zM1,4H2V5H1zM3,4H4V5H3zM4,4H5V5H4zM5,4H6V5H5zM7,4H8V5H7zM9,4H10V5H9zM10,4H11V5H10zM11,4H12V5H11zM13,4H14V5H13zM14,4H15V5H14zM16,4H17V5H16zM17,4H18V5H17zM19,4H20V5H19zM21,4H22V5H21zM22,4H23V5H22zM23,4H24V5H23zM25,4H26V5H25zM1,5H2V6H1zM3,5H4V6H3zM4,5H5V6H4zM5,5H6V6H5zM7,5H8V6H7zM10,5H11V6H10zM11,5H12V6H11zM12,5H13V6H12zM13,5H14V6H13zM15,5H16V6H15zM17,5H18V6H17zM19,5H20V6H19zM21,5H22V6H21zM22,5H23V6H22zM23,5H24V6H23zM25,5H26V6H25zM1,6H2V7H1zM7,6H8V7H7zM10,6H11V7H10zM11,6H12V7H11zM13,6H14V7H13zM14,6H15V7H14zM15,6H16V7H15zM17,6H18V7H17zM19,6H20V7H19zM25,6H26V7H25zM1,7H2V8H1zM2,7H3V8H2zM3,7H4V8H3zM4,7H5V8H4zM5,7H6V8H5zM6,7H7V8H6zM7,7H8V8H7zM9,7H10V8H9zM11,7H12V8H11zM13,7H14V8H13zM15,7H16V8H15zM17,7H18V8H17zM19,7H20V8H19zM20,7H21V8H20zM21,7H22V8H21zM22,7H23V8H22zM23,7H24V8H23zM24,7H25V8H24zM25,7H26V8H25zM9,8H10V9H9zM10,8H11V9H10zM11,8H12V9H11zM1,9H2V10H1zM7,9H8V10H7zM9,9H10V10H9zM12,9H13V10H12zM14,9H15V10H14zM15,9H16V10H15zM16,9H17V10H16zM18,9H19V10H18zM19,9H20V10H19zM22,9H23V10H22zM23,9H24V10H23zM24,9H25V10H24zM2,10H3V11H2zM3,10H4V11H3zM4,10H5V11H4zM8,10H9V11H8zM9,10H10V11H9zM16,10H17V11H16zM21,10H22V11H21zM22,10H23V11H22zM23,10H24V11H23zM24,10H25V11H24zM2,11H3V12H2zM4,11H5V12H4zM5,11H6V12H5zM7,11H8V12H7zM8,11H9V12H8zM9,11H10V12H9zM10,11H11V12H10zM13,11H14V12H13zM14,11H15V12H14zM15,11H16V12H15zM16,11H17V12H16zM18,11H19V12H18zM22,11H23V12H22zM24,11H25V12H24zM25,11H26V12H25zM1,12H2V13H1zM3,12H4V13H3zM4,12H5V13H4zM8,12H9V13H8zM9,12H10V13H9zM10,12H11V13H10zM13,12H14V13H13zM20,12H21V13H20zM22,12H23V13H22zM25,12H26V13H25zM6,13H7V14H6zM7,13H8V14H7zM12,13H13V14H12zM14,13H15V14H14zM15,13H16V14H15zM17,13H18V14H17zM19,13H20V14H19zM25,13H26V14H25zM1,14H2V15H1zM2,14H3V15H2zM4,14H5V15H4zM10,14H11V15H10zM11,14H12V15H11zM13,14H14V15H13zM14,14H15V15H14zM16,14H17V15H16zM17,14H18V15H17zM20,14H21V15H20zM24,14H25V15H24zM1,15H2V16H1zM5,15H6V16H5zM6,15H7V16H6zM7,15H8V16H7zM9,15H10V16H9zM10,15H11V16H10zM14,15H15V16H14zM15,15H16V16H15zM16,15H17V16H16zM17,15H18V16H17zM18,15H19V16H18zM20,15H21V16H20zM21,15H22V16H21zM22,15H23V16H22zM24,15H25V16H24zM25,15H26V16H25zM1,16H2V17H1zM4,16H5V17H4zM5,16H6V17H5zM8,16H9V17H8zM9,16H10V17H9zM13,16H14V17H13zM14,16H15V17H14zM15,16H16V17H15zM18,16H19V17H18zM19,16H20V17H19zM20,16H21V17H20zM22,16H23V17H22zM23,16H24V17H23zM25,16H26V17H25zM1,17H2V18H1zM4,17H5V18H4zM5,17H6V18H5zM7,17H8V18H7zM8,17H9V18H8zM9,17H10V18H9zM13,17H14V18H13zM15,17H16V18H15zM16,17H17V18H16zM17,17H18V18H17zM18,17H19V18H18zM19,17H20V18H19zM20,17H21V18H20zM21,17H22V18H21zM23,17H24V18H23zM9,18H10V19H9zM16,18H17V19H16zM17,18H18V19H17zM21,18H22V19H21zM1,19H2V20H1zM2,19H3V20H2zM3,19H4V20H3zM4,19H5V20H4zM5,19H6V20H5zM6,19H7V20H6zM7,19H8V20H7zM11,19H12V20H11zM13,19H14V20H13zM14,19H15V20H14zM15,19H16V20H15zM17,19H18V20H17zM19,19H20V20H19zM21,19H22V20H21zM25,19H26V20H25zM1,20H2V21H1zM7,20H8V21H7zM10,20H11V21H10zM11,20H12V21H11zM12,20H13V21H12zM15,20H16V21H15zM16,20H17V21H16zM17,20H18V21H17zM21,20H22V21H21zM25,20H26V21H25zM1,21H2V22H1zM3,21H4V22H3zM4,21H5V22H4zM5,21H6V22H5zM7,21H8V22H7zM11,21H12V22H11zM12,21H13V22H12zM16,21H17V22H16zM17,21H18V22H17zM18,21H19V22H18zM19,21H20V22H19zM20,21H21V22H20zM21,21H22V22H21zM23,21H24V22H23zM24,21H25V22H24zM25,21H26V22H25zM1,22H2V23H1zM3,22H4V23H3zM4,22H5V23H4zM5,22H6V23H5zM7,22H8V23H7zM10,22H11V23H10zM11,22H12V23H11zM13,22H14V23H13zM14,22H15V23H14zM16,22H17V23H16zM18,22H19V23H18zM19,22H20V23H19zM24,22H25V23H24zM25,22H26V23H25zM1,23H2V24H1zM3,23H4V24H3zM4,23H5V24H4zM5,23H6V24H5zM7,23H8V24H7zM10,23H11V24H10zM14,23H15V24H14zM15,23H16V24H15zM17,23H18V24H17zM22,23H23V24H22zM23,23H24V24H23zM25,23H26V24H25zM1,24H2V25H1zM7,24H8V25H7zM13,24H14V25H13zM14,24H15V25H14zM17,24H18V25H17zM18,24H19V25H18zM19,24H20V25H19zM20,24H21V25H20zM21,24H22V25H21zM25,24H26V25H25zM1,25H2V26H1zM2,25H3V26H2zM3,25H4V26H3zM4,25H5V26H4zM5,25H6V26H5zM6,25H7V26H6zM7,25H8V26H7zM9,25H10V26H9zM11,25H12V26H11zM12,25H13V26H12zM13,25H14V26H13zM14,25H15V26H14zM16,25H17V26H16zM17,25H18V26H17zM19,25H20V26H19zM22,25H23V26H22zM25,25H26V26H25z" id="qr-path" fill="#000000" fill-opacity="1" fill-rule="nonzero" stroke="none" /></svg></template>
+<script>
+"use strict";
+const M = JSON.parse(document.getElementById("methods").textContent);
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const TG = "https://t.me/uhanovv";
+const STORE = "vu-five-facets-v1";
+
+/* ============ I. Характер: авторская экспресс-методика ============
+   10 типов по Леонгарду. У каждого 5 утверждений: первые 2 задаются всем,
+   ещё 3 — только для трёх ведущих типов. Шкала 0–3, результат — среднее. */
+const TYPES = [
+  { id: "hyper", arch: "Энергия", tag: "#энергия", name: "Гипертимность",
+    plus: "лёгкость в общении, инициатива, умение заражать других идеями", minus: "рутина и доведение дел до конца, риск взять на себя слишком много",
+    items: ["Обычно у меня лёгкое, приподнятое настроение.", "Мне легко заводить новые знакомства и затевать новые дела.", "Я легко могу поднять настроение людям вокруг.", "Мне трудно усидеть на месте, когда можно чем-то заняться.", "Даже после неудачи я быстро возвращаю себе бодрость и чувство юмора."] },
+  { id: "dysth", arch: "Глубина", tag: "#вдумчивость", name: "Дистимность",
+    plus: "основательность, верность, трезвый взгляд на вещи", minus: "склонность замечать тёмную сторону, трудно радоваться и отдыхать",
+    items: ["Я отношусь к жизни скорее серьёзно, чем легко.", "Жизнь часто кажется мне трудной.", "В разговоре я больше слушаю, чем говорю.", "Я не жду от будущего ничего особенно хорошего.", "Шумные компании меня скорее утомляют, чем радуют."] },
+  { id: "cyclo", arch: "Волна", tag: "#переменчивость", name: "Циклотимность",
+    plus: "живость, умение ярко проживать хорошие периоды", minus: "подъёмы сменяются спадами, многое зависит от внешних событий",
+    items: ["Моё настроение может резко меняться — от подъёма к спаду.", "Моё настроение сильно зависит от событий и даже от погоды.", "Бывает, засыпаю в отличном настроении, а утром всё кажется мрачным.", "У меня бывают периоды, когда хочется общаться со всеми, и периоды, когда не хочется ни с кем.", "Иногда настроение портится без видимой причины."] },
+  { id: "excit", arch: "Импульс", tag: "#прямота", name: "Возбудимость",
+    plus: "решительность, быстрая реакция, прямота", minus: "вспыльчивость, в напряжении трудно сдерживаться",
+    items: ["Я быстро вспыхиваю, если что-то идёт не так.", "Бывает, я действую под влиянием порыва, а потом жалею.", "Бывают дни, когда меня всё раздражает и меня лучше не трогать.", "Если меня сильно задеть, я могу ответить очень резко.", "Иногда хочется всё бросить и уехать куда-нибудь далеко."] },
+  { id: "stuck", arch: "Стержень", tag: "#упорство", name: "Застревание",
+    plus: "настойчивость, верность принципам, способность довести начатое", minus: "обиды и несправедливость долго не отпускают",
+    items: ["Обиды я помню долго.", "Если со мной поступили несправедливо, я буду упорно отстаивать свои интересы.", "Препятствия только сильнее подталкивают меня к цели.", "Я остро переживаю любую несправедливость — к себе и к другим.", "К большинству людей я отношусь скорее осторожно, чем доверчиво."] },
+  { id: "pedant", arch: "Точность", tag: "#надёжность", name: "Педантичность",
+    plus: "аккуратность, ответственность, внимание к деталям", minus: "сомнения и перепроверки, трудно решиться без гарантий",
+    items: ["Закончив дело, я часто перепроверяю, всё ли сделано правильно.", "Мне важно, чтобы вещи лежали на своих местах.", "Уходя из дома, я могу вернуться, чтобы проверить, выключен ли свет и закрыта ли дверь.", "Меня заранее беспокоит мысль, что я могу опоздать.", "Перед сном я проверяю, всё ли закрыто и выключено."] },
+  { id: "anx", arch: "Осторожность", tag: "#бдительность", name: "Тревожность",
+    plus: "предусмотрительность, бережность, чувство долга", minus: "тревога о будущем, неуверенность, трудно отстаивать себя",
+    items: ["Меня нередко преследуют мысли, что с близкими может случиться что-то плохое.", "Меня довольно легко напугать.", "В детстве у меня было много страхов — темнота, гроза, собаки.", "Мне часто снятся тревожные сны.", "Мне было бы очень не по себе в одиночестве в тёмном незнакомом месте."] },
+  { id: "emot", arch: "Чуткость", tag: "#эмпатия", name: "Эмотивность",
+    plus: "тонкое понимание других, доброта, отзывчивость", minus: "глубоко переживаете и долго носите в себе чужую боль",
+    items: ["Грустный фильм легко может тронуть меня до слёз.", "Я долго переживаю чужие беды.", "В тяжёлом разговоре мне бывает трудно сдержать слёзы.", "Я очень люблю природу и животных.", "Мне тяжело смотреть на чужую боль."] },
+  { id: "demo", arch: "Сцена", tag: "#яркость", name: "Демонстративность",
+    plus: "артистизм, умение быть в центре и вдохновлять", minus: "сильная потребность в признании, болезненно переносите невнимание",
+    items: ["В компании я часто оказываюсь в центре внимания.", "Я легко вживаюсь в роль — так, что забываю, что это игра.", "Мне нравится выступать и быть на сцене.", "Я умею держать лицо: никто не догадается, что человек мне неприятен.", "Мне важно, чтобы меня замечали и признавали."] },
+  { id: "exalt", arch: "Восторг", tag: "#страстность", name: "Экзальтированность",
+    plus: "восторженность, способность глубоко чувствовать прекрасное", minus: "сильные перепады — от восторга до отчаяния",
+    items: ["Бывает, что ощущение счастья буквально переполняет меня.", "Разочарование может довести меня до отчаяния.", "Я могу восторгаться чем-то так, что не замечаю недостатков.", "Мои чувства обычно ярче, чем у окружающих.", "Радость и грусть у меня бывают очень сильными."] },
+];
+const AGREE4 = ["Совсем не про меня", "Скорее нет", "Скорее да", "Точно про меня"];
+
+/* ============ II. Отношения: ECR-RS (Fraley), 9 утверждений, шкала 1–7 ============ */
+const ATT = [
+  { t: "В трудную минуту мне помогает обратиться к близким людям.", rev: true },
+  { t: "Обычно я обсуждаю свои проблемы и переживания с близкими.", rev: true },
+  { t: "Я проговариваю с близкими то, что меня волнует.", rev: true },
+  { t: "Мне легко опереться на других людей.", rev: true },
+  { t: "Мне некомфортно открываться другим людям.", rev: false },
+  { t: "Я предпочитаю не показывать другим, что чувствую в глубине души.", rev: false },
+  { t: "Я часто беспокоюсь, что на самом деле я не очень важен для других.", tf: "Я часто беспокоюсь, что на самом деле я не очень важна для других.", rev: false },
+  { t: "Я боюсь, что близкие люди могут меня оставить.", rev: false },
+  { t: "Я беспокоюсь, что другие дорожат мной меньше, чем я ими.", rev: false },
+];
+const STYLES = {
+  secure:   { name: "Надёжный", tag: "#опора", text: "В близких отношениях вы, похоже, чувствуете себя довольно устойчиво: можете и опереться на людей, и оставаться собой.", ask: "На что вы опираетесь в близких отношениях — и как это использовать дальше?" },
+  anxious:  { name: "Тревожный", tag: "#тревожная_близость", text: "В близости вам очень важно чувствовать, что вы нужны, и беспокойство о том, не отдалятся ли люди, бывает сильным.", ask: "Что помогает вам почувствовать, что вы нужны, — и что происходит, когда этого нет?" },
+  avoidant: { name: "Избегающий", tag: "#самостоятельность", text: "В близких отношениях вы скорее опираетесь на себя: открываться и зависеть от других непросто.", ask: "Что для вас значит — опереться на другого человека?" },
+  fearful:  { name: "Тревожно-избегающий", tag: "#осторожная_близость", text: "Близость для вас одновременно желанна и тревожна: хочется опоры, но открываться страшно.", ask: "Что делает близость одновременно желанной и опасной?" },
+};
+
+/* ============ III. Сценарии: опросник жизненных ловушек Янга, адаптивно ============ */
+const TRAPS = [
+  { id: "aband",  title: "Покинутость", items: [1, 2], text: "Страх, что близкие уйдут; желание держаться за людей крепче, чем хочется самому.", core: "страх, что близкие уйдут", ask: "Что происходит с вами, когда близкий человек отдаляется?" },
+  { id: "mistr",  title: "Недоверие", items: [3, 4], text: "Ожидание подвоха: трудно расслабиться рядом с людьми, всё время немного начеку.", core: "ожидание подвоха от людей", ask: "Кому вы позволяете быть по-настоящему рядом — и что для этого нужно?" },
+  { id: "vuln",   title: "Уязвимость", items: [5, 6], text: "Ощущение, что вот-вот случится что-то плохое — с деньгами, здоровьем, близкими.", core: "ощущение, что вот-вот случится плохое", ask: "Откуда берётся ощущение, что мир небезопасен?" },
+  { id: "depend", title: "Зависимость и слияние", items: [7, 8], text: "Сомнение, что справитесь сами; очень тесная связь с семьёй.", core: "сомнение, что справитесь сами", ask: "Где проходит граница между вами и вашей семьёй?" },
+  { id: "depriv", title: "Эмоциональная депривация", items: [9, 10], text: "Чувство, что вас по-настоящему не видят и не понимают.", core: "нехватка тепла и понимания", ask: "Умеете ли вы просить о том, что вам действительно нужно?" },
+  { id: "exclu",  title: "Отчуждённость", items: [11, 12], text: "Ощущение, что вы не похожи на других и трудно почувствовать себя своим.", core: "ощущение, что вы не похожи на других", ask: "Где вам по-настоящему спокойно среди людей?" },
+  { id: "defect", title: "Дефективность", items: [13, 14], text: "Внутренний стыд, ощущение, что вас настоящего невозможно любить.", core: "внутренний стыд за себя", ask: "Что, как вам кажется, другие не должны о вас узнать?" },
+  { id: "fail",   title: "Неуспешность", items: [15, 16], text: "Сравнение себя с другими не в свою пользу.", core: "сравнение себя с другими не в свою пользу", ask: "С кем вы себя сравниваете — и чей это на самом деле голос?" },
+  { id: "subj",   title: "Подчинение", items: [17, 18], text: "Привычка ставить чужие желания выше своих, чтобы сохранить отношения.", core: "привычка ставить чужие желания выше своих", ask: "Что происходит, когда вы говорите «нет»?" },
+  { id: "stand",  title: "Жёсткие стандарты", items: [19, 20], text: "Высокая планка и мало права на отдых.", core: "очень высокая планка к себе", ask: "Что случится, если однажды сделать «достаточно хорошо»?" },
+  { id: "entit",  title: "Вседозволенность", items: [21, 22], text: "Трудно с рамками, рутиной и самодисциплиной.", core: "трудности с рамками и самодисциплиной", ask: "Какие правила для вас по-настоящему важны — и почему?" },
+];
+const LT6 = ["Совершенно не обо мне", "В основном неверно", "Верно в небольшой степени", "Скорее верно, чем неверно", "В основном верно", "Идеально описывает меня"];
+
+/* ============ IV. Ресурс: WHO-5 ============ */
+const WHO = [
+  ["Я был бодрым и в хорошем настроении", "Я была бодрой и в хорошем настроении"],
+  ["Я чувствовал себя спокойным и расслабленным", "Я чувствовала себя спокойной и расслабленной"],
+  ["Я был активным и энергичным", "Я была активной и энергичной"],
+  ["Я просыпался свежим и отдохнувшим", "Я просыпалась свежей и отдохнувшей"],
+  ["Мои дни были наполнены тем, что мне интересно", "Мои дни были наполнены тем, что мне интересно"],
+];
+const WHO_OPTS = [["Всё время", 5], ["Большую часть времени", 4], ["Более половины времени", 3], ["Менее половины времени", 2], ["Иногда", 1], ["Ни разу", 0]];
+
+/* ============ V. Состояние: PHQ-4 → PHQ-9 / GAD-7 ============ */
+const PHQ = ["Мало интереса или удовольствия от привычных занятий", "Плохое настроение, подавленность или ощущение безысходности", "Трудности с засыпанием, прерывистый сон или, наоборот, слишком долгий сон", "Усталость или упадок сил", "Плохой аппетит или переедание", "Плохое мнение о себе: ощущение, что вы потерпели неудачу или подвели себя или близких", "Трудно сосредоточиться — например, на чтении или просмотре видео", "Движения или речь настолько замедлены, что это заметно другим, или, наоборот, суетливость и беспокойство", "Мысли о том, что лучше было бы умереть, или о причинении себе вреда"];
+const GAD = ["Нервозность, тревога или ощущение «на взводе»", "Не получается остановить или контролировать беспокойство", "Слишком сильно беспокоитесь по разным поводам", "Трудно расслабиться", "Такое беспокойство, что трудно усидеть на месте", "Легко раздражаетесь или злитесь", "Страх, будто может случиться что-то ужасное"];
+const FREQ = ["Ни разу", "Несколько дней", "Более половины дней", "Почти каждый день"];
+// Экспресс-версия Интегративного теста тревожности (НИПНИ им. Бехтерева): только часть «в последнее время»,
+// 10 из 15 утверждений, по два на каждую составляющую тревоги. Группировка — авторская.
+const ITT = {
+  m: ["Я находился в напряжении", "Я расстраивался", "Я тревожился о будущем", "Я бывал озабочен", "Я ощущал непонятную угрозу", "Я быстро уставал", "Я бывал не уверен в себе", "Я избегал любых конфликтов", "Я легко приходил в замешательство", "Я плохо спал"],
+  f: ["Я находилась в напряжении", "Я расстраивалась", "Я тревожилась о будущем", "Я бывала озабочена", "Я ощущала непонятную угрозу", "Я быстро уставала", "Я бывала не уверена в себе", "Я избегала любых конфликтов", "Я легко приходила в замешательство", "Я плохо спала"],
+};
+const ITT_OPTS = ["Почти никогда", "Редко", "Часто", "Почти всё время"];
+const ANX_PARTS = [
+  { id: "tension", title: "Напряжение", items: [0, 1], text: "ощущение, что вы всё время на взводе и легко расстраиваетесь" },
+  { id: "future",  title: "Мысли о будущем", items: [2, 3], text: "что будет дальше и как всё сложится" },
+  { id: "fear",    title: "Страх и неуверенность", items: [4, 6], text: "смутное ощущение угрозы и неуверенность в себе" },
+  { id: "social",  title: "Осторожность с людьми", items: [7, 8], text: "желание избежать конфликтов и неловкости" },
+  { id: "fatigue", title: "Истощение", items: [5, 9], text: "усталость и плохой сон" },
+];
+
+/* ============ Состояние приложения ============ */
+let S = { name: "", g: "", stage: 0, ans: {}, hist: {}, flags: {}, done: false };
+const save = () => { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} };
+const load = () => { try { return JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { return null; } };
+const G = (m, f) => (S.g === "f" ? f : m);
+const A = id => S.ans[id];
+const has = id => id in S.ans;
+
+/* ============ Очереди вопросов (пересчитываются после каждого ответа) ============ */
+function coreMean(t) { return ((A(`c_${t.id}_0`) ?? 0) + (A(`c_${t.id}_1`) ?? 0)) / 2; }
+function leaders() {
+  return [...TYPES].sort((a, b) => coreMean(b) - coreMean(a) || TYPES.indexOf(a) - TYPES.indexOf(b)).slice(0, 3);
+}
+function charQueue() {
+  const core = [0, 1].flatMap(k => TYPES.map(t => ({ id: `c_${t.id}_${k}`, text: t.items[k], scale: "agree4" })));
+  if (!core.every(q => has(q.id))) return core;
+  const extra = leaders().flatMap(t => [2, 3, 4].map(k => ({ id: `c_${t.id}_${k}`, text: t.items[k], scale: "agree4" })));
+  extra[0].before = "Спасибо. Теперь несколько уточняющих вопросов о том, что звучит в вас ярче всего.";
+  return core.concat(extra);
+}
+function attQueue() { return ATT.map((x, i) => ({ id: `a_${i}`, text: x.tf ? G(x.t, x.tf) : x.t, scale: "seven" })); }
+function ltQueue() {
+  return TRAPS.flatMap(t => {
+    const first = { id: `l_${t.items[0]}`, text: M.lt[S.g][t.items[0] - 1], scale: "lt6" };
+    return A(first.id) >= 4 ? [first, { id: `l_${t.items[1]}`, text: M.lt[S.g][t.items[1] - 1], scale: "lt6" }] : [first];
+  });
+}
+function resQueue() { return WHO.map((w, i) => ({ id: `w_${i}`, text: G(w[0], w[1]), scale: "who" })); }
+const phqExt = () => has("p_0") && has("p_1") && A("p_0") + A("p_1") >= 3;
+const ittOn = () => has("g_0") && has("g_1") && A("g_0") + A("g_1") >= 2;
+function stateQueue() {
+  const q = (p, i, text) => ({ id: `${p}_${i}`, text, scale: "freq" });
+  const out = [q("p", 0, PHQ[0]), q("p", 1, PHQ[1])];
+  if (phqExt()) { const ext = [2, 3, 4, 5, 6, 7].map(i => q("p", i, PHQ[i])); ext[0].before = "Спасибо. Задам ещё несколько вопросов о настроении, чтобы лучше понять картину."; out.push(...ext); }
+  out.push(q("g", 0, GAD[0]), q("g", 1, GAD[1]));
+  if (ittOn()) {
+    const ext = ITT[S.g].map((t, i) => ({ id: `t_${i}`, text: t, scale: "itt" }));
+    ext[0].before = "Похоже, тревога вам знакома. Давайте посмотрим, из чего она складывается — десять коротких утверждений о последнем времени.";
+    out.push(...ext);
+  }
+  out.push(q("p", 8, PHQ[8]));
+  return out;
+}
+
+const STAGES = [
+  { id: "char", title: "Характер", queue: charQueue, hint: "Насколько это про вас?" },
+  { id: "att", title: "Отношения", queue: attQueue, hint: "Как вы обычно чувствуете себя с близкими людьми?" },
+  { id: "lt", title: "Сценарии", queue: ltQueue, hint: "Насколько это верно для вас — сейчас или в прошлом?" },
+  { id: "res", title: "Ресурс", queue: resQueue, hint: "Последние две недели…" },
+  { id: "state", title: "Состояние", queue: stateQueue, hint: "Как часто за последние две недели вас беспокоило…" },
+];
+
+/* ============ Подсчёт ============ */
+function scoreChar() {
+  const lead = new Set(leaders().map(t => t.id));
+  return TYPES.map(t => {
+    const ks = lead.has(t.id) ? [0, 1, 2, 3, 4] : [0, 1];
+    const vals = ks.map(k => A(`c_${t.id}_${k}`)).filter(v => v !== undefined);
+    const mean = vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0;
+    return { ...t, pct: Math.round((mean / 3) * 100) };
+  }).sort((a, b) => b.pct - a.pct);
+}
+function scoreAtt() {
+  const v = ATT.map((x, i) => (x.rev ? 8 - A(`a_${i}`) : A(`a_${i}`)));
+  const avoid = v.slice(0, 6).reduce((s, x) => s + x, 0) / 6;
+  const anx = v.slice(6).reduce((s, x) => s + x, 0) / 3;
+  const key = anx > 4 ? (avoid > 4 ? "fearful" : "anxious") : avoid > 4 ? "avoidant" : "secure";
+  return { avoid, anx, key, ...STYLES[key] };
+}
+function scoreTraps() {
+  return TRAPS.map(t => {
+    const top = Math.max(...t.items.map(i => A(`l_${i}`) ?? 0));
+    return { ...t, top, level: top >= 5 ? 2 : top >= 3 ? 1 : 0 };
+  });
+}
+function scoreRes() {
+  const pct = WHO.reduce((s, _, i) => s + A(`w_${i}`), 0) * 4;
+  return { pct, word: pct <= 28 ? "очень низкий" : pct <= 50 ? "снижен" : pct <= 72 ? "достаточный" : "высокий", low: pct <= 50 };
+}
+function scoreState() {
+  const sum = (p, n) => Array.from({ length: n }, (_, i) => A(`${p}_${i}`) ?? 0).reduce((s, v) => s + v, 0);
+  const pe = phqExt(), it = ittOn();
+  const phq = pe ? sum("p", 9) : null, g2 = (A("g_0") ?? 0) + (A("g_1") ?? 0);
+  const parts = it ? ANX_PARTS.map(x => ({ ...x, pct: Math.round(x.items.reduce((s, i) => s + (A(`t_${i}`) ?? 0), 0) / 6 * 100) })).sort((a, b) => b.pct - a.pct) : null;
+  const band = (x, w) => (x >= 15 ? w[3] : x >= 10 ? w[2] : x >= 5 ? w[1] : w[0]);
+  const mood = pe ? band(phq, ["ровное", "немного снижено", "заметно снижено", "сильно снижено"]) : "ровное";
+  const anx = g2 >= 5 ? "сильная тревога" : g2 >= 3 ? "заметная тревога" : g2 === 2 ? "лёгкая тревога" : "спокойно";
+  return {
+    mood, anx, crisis: A("p_8") > 0,
+    moodPos: pe ? Math.max(.25, phq / 27) : (A("p_0") + A("p_1")) / 6 * .3,
+    anxPos: Math.max(.04, g2 / 6), parts,
+    moodFlag: pe && phq >= 10, anxFlag: g2 >= 3, severe: (pe && phq >= 15) || g2 >= 5,
+  };
+}
+
+/* ============ Интро ============ */
+const nameEl = $("#name"), startEl = $("#start");
+const consentEl = $("#consent");
+const syncStart = () => { startEl.disabled = !(nameEl.value.trim() && S.g && consentEl.checked); };
+consentEl.addEventListener("change", syncStart);
+nameEl.addEventListener("input", syncStart);
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+  S.g = b.dataset.g;
+  document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  syncStart();
+}));
+startEl.addEventListener("click", () => {
+  S = { name: nameEl.value.trim(), g: S.g, stage: 0, ans: {}, hist: {}, flags: {}, done: false };
+  save(); begin(false);
+});
+const saved = load();
+if (saved && saved.name && Object.keys(saved.ans || {}).length) {
+  const r = $("#resume");
+  r.hidden = false;
+  r.textContent = saved.done ? `Открыть профиль (${saved.name})` : `Продолжить с места, где остановились (${saved.name})`;
+  r.addEventListener("click", () => { S = saved; S.done ? showResult() : begin(true); });
+}
+
+/* ============ Чат ============ */
+const thread = $("#thread"), chips = $("#chips"), deck = $("#deck");
+const scrollDown = el => (el || thread.lastElementChild)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "end" });
+async function say(html, pause = 1) {
+  $("#status").textContent = "печатает…";
+  const t = document.createElement("div");
+  t.className = "msg v";
+  t.innerHTML = '<span class="typing"><span></span><span></span><span></span></span>';
+  thread.append(t); scrollDown();
+  await sleep(Math.min(500 + html.length * 9, 1700) * pause);
+  t.innerHTML = html; $("#status").textContent = "на связи"; scrollDown();
+  await sleep(250);
+}
+const note = text => { const d = document.createElement("div"); d.className = "msg badge"; d.textContent = text; thread.append(d); scrollDown(); };
+const me = text => { const d = document.createElement("div"); d.className = "msg u"; d.textContent = text; thread.append(d); scrollDown(); };
+function choose(label) {
+  return new Promise(res => {
+    chips.innerHTML = `<button class="btn">${esc(label)}</button>`;
+    chips.firstElementChild.addEventListener("click", () => { chips.innerHTML = ""; me(label); res(); });
+    scrollDown(chips);
+  });
+}
+function steps() {
+  document.querySelectorAll(".steps i").forEach((el, i) => { el.className = S.done || i < S.stage ? "done" : i === S.stage ? "on" : ""; });
+}
+
+const INTRO = [
+  "Начнём с характера. Я буду показывать короткие утверждения — отметьте, насколько каждое про вас. Правильных ответов нет: доверяйте первой реакции.",
+  "Вторая грань — отношения. Девять утверждений о том, как вы обычно чувствуете себя с близкими людьми: партнёром, семьёй, друзьями. Оценивайте от 1 до 7.",
+  "Третья грань — жизненные сценарии. Оцените от 1 до 6, насколько утверждение про вас — сейчас или в прошлом. Если что-то отзовётся, я задам уточняющий вопрос.",
+  "Четвёртая грань — ресурс. Пять коротких вопросов о том, как вы себя чувствовали последние две недели.",
+  "И последняя грань — состояние. Несколько вопросов о том, что беспокоило вас последние две недели.",
+];
+
+async function outro(i) {
+  const n = esc(S.name);
+  if (i === 0) {
+    const top = scoreChar()[0];
+    note(`Грань I из V открыта · ${top.tag}`);
+    await say(`Спасибо, ${n}. Ваш ведущий архетип — <em>«${esc(top.arch)}»</em>: ${esc(top.plus)}. Подробнее — в итоговом профиле.`);
+  }
+  if (i === 1) {
+    note("Грань II из V открыта · отношения");
+    await say("Здесь получился интересный результат. Не буду раскрывать его заранее — покажу в профиле вместе с остальным.");
+  }
+  if (i === 2) {
+    const n2 = scoreTraps().filter(t => t.level > 0).length;
+    note(`Грань III из V открыта · сценариев откликнулось: ${n2}`);
+    await say(n2 ? "Спасибо за честность. Сценарии — это не ярлыки, а способы, которыми мы когда-то научились справляться. С ними можно работать." : "Ни один сценарий не откликнулся заметно — это хорошая опора. Обсудим, на что именно вы опираетесь.");
+  }
+  if (i === 3) { note("Грань IV из V открыта · ресурс"); await say("Почти готово. Осталась последняя грань."); }
+  if (i === 4) { note("Все пять граней открыты"); await say(`Готово, ${n}. Я собрал ваш профиль: архетип, стиль привязанности, сценарии, ресурс и состояние — и общий взгляд на всё вместе.`); }
+}
+
+async function begin(resumed) {
+  $("#intro").hidden = true; $("#chat").hidden = false; steps(); window.scrollTo(0, 0);
+  const n = esc(S.name);
+  if (!resumed) {
+    await say(`${n}, рад знакомству.`, .6);
+    await say("Впереди пять граней. После каждой я буду рядом, а в конце соберу ваш личный профиль.");
+  } else {
+    await say(`С возвращением, ${n}. Продолжим с того места, где вы остановились.`);
+  }
+  let skipIntro = resumed && (S.hist[STAGES[S.stage]?.id] || []).length > 0;
+  for (; S.stage < STAGES.length; S.stage++, save()) {
+    steps();
+    if (!skipIntro) { await say(INTRO[S.stage]); await choose(S.stage === 0 ? "Хорошо, начнём" : "Продолжим"); }
+    skipIntro = false;
+    await runStage(STAGES[S.stage]);
+    await outro(S.stage);
+  }
+  S.done = true; save(); steps();
+  await choose("Открыть мой профиль");
+  showResult();
+}
+
+async function runStage(st) {
+  S.hist[st.id] ||= [];
+  let pre = null;
+  for (;;) {
+    const queue = st.queue();
+    const q = queue.find(x => !has(x.id));
+    if (!q) { deck.innerHTML = ""; return; }
+    if (q.before && !S.flags[q.id]) { S.flags[q.id] = 1; deck.innerHTML = ""; await say(q.before); }
+    const answered = queue.filter(x => has(x.id)).length;
+    const v = await ask(st, q, answered, queue.length, pre);
+    pre = null;
+    if (v === "back") {
+      const prev = S.hist[st.id].pop();
+      pre = A(prev); delete S.ans[prev]; save(); continue;
+    }
+    S.ans[q.id] = v; S.hist[st.id].push(q.id); save();
+  }
+}
+
+function ask(st, q, i, total, pre) {
+  return new Promise(resolve => {
+    const sel = v => (pre === v ? "sel" : "");
+    let body = "";
+    if (q.scale === "agree4") {
+      body = `<div class="grid2">${AGREE4.map((l, v) => `<button class="opt ${sel(v)}" data-v="${v}">${l}</button>`).join("")}</div>`;
+    } else if (q.scale === "seven") {
+      body = `<div class="scale" style="grid-template-columns:repeat(7,1fr)">${[1,2,3,4,5,6,7].map(v => `<button class="opt ${sel(v)}" data-v="${v}">${v}</button>`).join("")}</div>
+        <div class="scale-legend"><span>совсем не так</span><span>полностью так</span></div>`;
+    } else if (q.scale === "lt6") {
+      body = `<div class="scale" style="grid-template-columns:repeat(6,1fr)">${[1,2,3,4,5,6].map(v => `<button class="opt ${sel(v)}" data-v="${v}" title="${esc(LT6[v-1])}">${v}</button>`).join("")}</div>
+        <div class="scale-legend"><span>совсем не обо мне</span><span>точно обо мне</span></div>
+        <div class="scale-hint" id="hint">${pre ? esc(LT6[pre - 1]) : ""}</div>`;
+    } else if (q.scale === "who") {
+      body = `<div class="opts">${WHO_OPTS.map(([l, v]) => `<button class="opt ${sel(v)}" data-v="${v}">${l}</button>`).join("")}</div>`;
+    } else if (q.scale === "itt") {
+      body = `<div class="grid2">${ITT_OPTS.map((l, v) => `<button class="opt ${sel(v)}" data-v="${v}">${l}</button>`).join("")}</div>`;
+    } else {
+      body = `<div class="grid2">${FREQ.map((l, v) => `<button class="opt ${sel(v)}" data-v="${v}">${l}</button>`).join("")}</div>`;
+    }
+    deck.innerHTML = `<div class="deck">
+      <div class="top"><span>${["I","II","III","IV","V"][S.stage]} · ${esc(st.title)} · ${i + 1} из ${total}</span>
+        ${S.hist[st.id].length ? '<button class="link" id="back" style="padding:0">← назад</button>' : ""}</div>
+      <div class="bar"><div style="width:${(i / total) * 100}%"></div></div>
+      <div class="hint-top">${esc(q.scale === "itt" ? "Как часто в последнее время…" : st.hint)}</div>
+      <div class="q">${esc(q.text)}</div>
+      ${body}
+    </div>`;
+    const card = deck.firstElementChild;
+    card.querySelectorAll(".opt").forEach(b => {
+      if (q.scale === "lt6") b.addEventListener("mouseenter", () => { $("#hint").textContent = LT6[b.dataset.v - 1]; });
+      b.addEventListener("click", () => {
+        card.querySelectorAll(".opt").forEach(x => x.classList.remove("sel"));
+        b.classList.add("sel");
+        if (q.scale === "lt6") $("#hint").textContent = LT6[b.dataset.v - 1];
+        setTimeout(() => resolve(+b.dataset.v), reduce ? 0 : 200);
+      });
+    });
+    $("#back")?.addEventListener("click", () => resolve("back"));
+    card.scrollIntoView({ behavior: "auto", block: "end" });
+  });
+}
+
+/* ============ Общий взгляд ============ */
+const LENS = {
+  hyper: "Энергия и оптимизм помогают вам не застревать в этом, но иногда и прятать переживания за активностью.",
+  stuck: "Упорство и чувство справедливости могут закреплять этот сценарий: обиды и выводы о людях держатся долго.",
+  emot: "Ваша чуткость делает такие переживания особенно глубокими — и вместе с тем помогает их распознавать.",
+  pedant: "Привычка всё перепроверять может его усиливать: хочется гарантий, которых жизнь не даёт.",
+  anx: "Осторожность может делать его особенно ощутимым: многое переживается заранее, ещё до того, как случилось.",
+  cyclo: "Из-за волн настроения он может то почти исчезать, то возвращаться с новой силой.",
+  demo: "Потребность в признании может быть способом с ним справляться: внимание других ненадолго успокаивает.",
+  excit: "Импульсивность может запускать его быстро: реакция опережает размышление.",
+  dysth: "Серьёзный, чуть пессимистичный взгляд может его подтверждать: плохое замечается легче хорошего.",
+  exalt: "Яркость чувств делает его заметнее: от надежды до отчаяния иногда один шаг.",
+};
+const COMBOS = [
+  { s: ["anxious", "fearful"], t: ["aband"], text: "Стиль привязанности и сценарий «Покинутость» говорят об одном — о страхе потерять близость. Это одна из самых важных и благодарных тем для работы." },
+  { s: ["anxious"], t: ["subj"], text: "Тревога за отношения и привычка подстраиваться под других часто идут рядом: будто близость нужно заслужить." },
+  { s: ["avoidant", "fearful"], t: ["mistr", "depriv", "exclu"], text: "Привычка опираться только на себя и этот сценарий поддерживают друг друга: проще не ждать от людей многого, чем разочароваться." },
+  { s: ["fearful"], t: ["defect"], text: "Желание близости и страх, что вас настоящего не примут, сходятся вместе — поэтому открываться бывает особенно непросто." },
+  { a: ["pedant"], t: ["stand"], text: "Вместе это складывается в картину перфекционизма: высокая планка подкреплена вниманием к деталям. Это делает вас надёжным человеком, но за надёжность часто платят усталостью." },
+  { a: ["anx"], t: ["vuln"], text: "Осторожность и ощущение небезопасного мира поддерживают друг друга, поэтому много сил может уходить на то, чтобы предусмотреть всё заранее." },
+  { a: ["emot", "anx"], t: ["aband", "subj"], text: "Чуткость к другим и страх потерять близость нередко отодвигают ваши желания на второй план — лишь бы отношения сохранились." },
+  { a: ["stuck"], t: ["mistr"], text: "Обиды помнятся долго, а доверие даётся непросто — так близость может становиться осторожной, даже когда её очень хочется." },
+  { a: ["dysth", "anx", "pedant"], t: ["defect", "fail"], text: "Похоже, внутри звучит довольно строгий критик: успехи легко обесцениваются, а ошибки запоминаются надолго." },
+  { a: ["cyclo", "exalt", "emot"], t: ["aband", "depriv"], text: "Отношения могут ощущаться как качели: сильная радость от близости и такая же сильная боль, когда её не хватает." },
+  { a: ["excit", "hyper"], t: ["entit"], text: "Энергия и импульсивность вместе с трудностями в самоограничении иногда приводят к решениям, о которых потом приходится жалеть." },
+  { a: ["demo", "hyper"], t: ["fail", "defect", "stand"], text: "Яркость и стремление быть на виду могут сочетаться с внутренним сомнением в своей ценности — снаружи это заметно меньше, чем изнутри." },
+];
+
+function profile() {
+  const ch = scoreChar(), att = scoreAtt(), traps = scoreTraps(), res = scoreRes(), st = scoreState();
+  const strong = ch.filter(x => x.pct >= 50);
+  const active = traps.filter(t => t.level > 0).sort((a, b) => b.top - a.top || b.level - a.level);
+  return { ch, att, traps, res, st, strong, active };
+}
+
+function overview(P) {
+  const { ch, att, res, st, strong, active } = P;
+  const parts = [];
+  if (strong.length >= 2) parts.push(`Ваш ведущий архетип — «${strong[0].arch}», рядом звучит «${strong[1].arch}». В этом ваша сила: ${strong[0].plus}.`);
+  else if (strong.length === 1) parts.push(`Ваш ведущий архетип — «${strong[0].arch}»: в этом ваша сила — ${strong[0].plus}.`);
+  else parts.push(`Ваш характер выглядит ровным: ни одна черта не доминирует, и это даёт гибкость. Чуть ярче остальных звучит «${ch[0].arch}».`);
+  parts.push(att.text);
+  if (active.length) {
+    const [m, s2] = active;
+    parts.push(`Из жизненных сценариев сильнее всего откликается «${m.title}» — ${m.core}${s2 ? `, а рядом с ним «${s2.title}»` : ""}.`);
+    let combo = null;
+    for (const tr of active.slice(0, 3)) {
+      combo = COMBOS.find(c => c.t.includes(tr.id) && ((c.s && c.s.includes(att.key)) || (c.a && c.a.some(a => strong.some(x => x.id === a)))));
+      if (combo) break;
+    }
+    parts.push(combo ? combo.text : LENS[(strong[0] || ch[0]).id]);
+  } else {
+    parts.push("Ни один из одиннадцати жизненных сценариев не звучит заметно — это хорошая опора.");
+  }
+  if (st.parts && st.parts[0].pct >= 50) parts.push(`Если разложить вашу тревогу на составляющие, на первом месте — ${st.parts[0].title.toLowerCase()}: ${st.parts[0].text}.`);
+  if (st.severe) parts.push("Сейчас вам заметно тяжело — это стоит не терпеть, а обсудить.");
+  else if (res.low || st.moodFlag || st.anxFlag) {
+    const bits = [st.moodFlag && "настроение снижено", st.anxFlag && "тревога заметна"].filter(Boolean);
+    parts.push(`При этом сил сейчас меньше, чем хотелось бы${bits.length ? ", " + bits.join(", а ") : ""}: в такие периоды привычные сценарии обычно звучат громче.`);
+  } else parts.push("Ресурса сейчас достаточно, а настроение и тревога в пределах обычного — хорошее время, чтобы исследовать себя спокойно.");
+  parts.push("Мне было бы интересно посмотреть вместе, где эти черты дают вам опору, а где превращаются в ловушку.");
+  return parts.join(" ");
+}
+
+/* ============ Визуализации ============ */
+function quadSvg(att) {
+  const W = 300, H = 270, x0 = 46, y0 = 14, w = 230, h = 206;
+  const clamp = v => Math.min(.9, Math.max(.1, v));
+  const px = x0 + clamp((att.avoid - 1) / 6) * w, py = y0 + (1 - clamp((att.anx - 1) / 6)) * h;
+  const mid = (v, a, b) => a + ((v - 1) / 6) * (b - a);
+  const mx = mid(4, x0, x0 + w), my = y0 + h / 2;
+  const lab = (x, y, t, on, a) => `<text x="${x}" y="${y}" text-anchor="${a}" style="${on ? "fill:#2d4a43;font-weight:600" : ""}">${t}</text>`;
+  return `<svg class="quad" viewBox="0 0 ${W} ${H}" role="img" aria-label="Стиль привязанности: ${esc(att.name)}">
+    <rect x="${x0}" y="${y0}" width="${w}" height="${h}" rx="12" fill="#f2f0eb"/>
+    <line x1="${mx}" y1="${y0}" x2="${mx}" y2="${y0 + h}" stroke="#e0dcd3"/><line x1="${x0}" y1="${my}" x2="${x0 + w}" y2="${my}" stroke="#e0dcd3"/>
+    ${lab(x0 + 10, y0 + 18, "Тревожный", att.key === "anxious", "start")}${lab(x0 + w - 10, y0 + 18, "Тревожно-избегающий", att.key === "fearful", "end")}
+    ${lab(x0 + 10, y0 + h - 10, "Надёжный", att.key === "secure", "start")}${lab(x0 + w - 10, y0 + h - 10, "Избегающий", att.key === "avoidant", "end")}
+    <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="14" fill="rgba(45,74,67,.15)"/><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="6" fill="#2d4a43" stroke="#fbfaf7" stroke-width="2"/>
+    <text x="${x0 + w / 2}" y="${H - 8}" text-anchor="middle">избегание близости →</text>
+    <text x="16" y="${y0 + h / 2}" text-anchor="middle" transform="rotate(-90 16 ${y0 + h / 2})">тревога в отношениях →</text>
+  </svg>`;
+}
+function ringSvg(pct) {
+  const r = 46, c = 2 * Math.PI * r;
+  return `<svg viewBox="0 0 112 112" role="img" aria-label="Ресурс ${pct}%">
+    <circle cx="56" cy="56" r="${r}" fill="none" stroke="#e0dcd3" stroke-width="8"/>
+    <circle cx="56" cy="56" r="${r}" fill="none" stroke="#2d4a43" stroke-width="8" stroke-linecap="round" stroke-dasharray="${(c * pct / 100).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 56 56)"/>
+    <text x="56" y="63" text-anchor="middle" style="font-family:var(--serif);font-size:30px;fill:#1e2422">${pct}%</text>
+  </svg>`;
+}
+
+/* ============ Профиль ============ */
+function showResult() {
+  $("#intro").hidden = true; $("#chat").hidden = true; $("#wrap").classList.add("wide");
+  const P = profile();
+  const { ch, att, traps, res, st, strong, active } = P;
+  const n = esc(S.name);
+  const today = new Date().toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+  const tags = [...(strong.length ? strong : ch).slice(0, 3).map(x => x.tag), att.tag, res.low ? "#нужна_пауза" : "#есть_ресурс"];
+  const questions = [...active.slice(0, 2).map(t => t.ask), att.ask];
+  if (questions.length < 3) questions.push(`Как «${(strong[0] || ch[0]).arch}» помогает вам — и когда начинает мешать?`);
+  const lead = strong.length ? strong.slice(0, 2) : ch.slice(0, 1);
+
+  $("#result").innerHTML = `
+    <div class="stack g16">
+      <div class="who"><div class="mono">ВУ</div><div class="stack"><span class="eyebrow">Пять граней · ${today}</span><span style="font-weight:600">Виктор Уханов</span></div></div>
+      <h1>${n},<br>ваш профиль</h1>
+      <p class="voice" style="max-width:32em">Это не диагноз и не оценка. Скорее набросок портрета: какие черты в вас звучат громче, как вы держитесь в близости, что повторяется и сколько у вас сейчас сил.</p>
+    </div>
+
+    ${st.crisis ? `<div class="crisis">
+      <b>Если вам сейчас очень тяжело</b>
+      <p>Вы отметили мысли о смерти или о том, чтобы причинить себе вред. Я очень прошу вас не оставаться с этим наедине: напишите мне или прямо сейчас позвоните на линию помощи — там выслушают бесплатно и анонимно.</p>
+      <div class="phones"><span>Экстренная помощь — <b>112</b></span><span>Телефон доверия, круглосуточно — <b>8-800-2000-122</b></span><span>Психологическая помощь (Москва) — <b>051</b>, с мобильного <b>8-495-051</b></span></div>
+    </div>` : ""}
+
+    <section class="overview">
+      <span class="eyebrow">Общий взгляд</span>
+      <p class="overview-text">${esc(overview(P))}</p>
+      <div class="tags">${tags.map((t, i) => `<span class="${i >= 3 ? "alt" : ""}">${esc(t)}</span>`).join("")}</div>
+    </section>
+
+    <div class="dash">
+      <div class="tile span2">
+        <div class="head"><span class="eyebrow">I · Характер</span><h2>${lead.map(x => `«${esc(x.arch)}»`).join(" и ")}</h2>
+          <p class="note">${strong.length ? "Ваш ведущий архетип. Выделены черты, которые звучат ярче половины шкалы." : "Профиль ровный: ни одна черта не доминирует."}</p></div>
+        <div class="arch">${ch.map(x => `<div class="sc ${x.pct >= 50 ? "hi" : ""}"><span>${esc(x.arch)}</span><div class="track"><div style="width:${x.pct}%"></div></div><span class="v">${x.pct}%</span></div>`).join("")}</div>
+        <div class="pair"><div><b>Даёт силу</b>${esc(lead[0].plus)}</div><div><b>Бывает непросто</b>${esc(lead[0].minus)}</div></div>
+      </div>
+
+      <div class="tile">
+        <div class="head"><span class="eyebrow">II · Отношения</span><h2>${esc(att.name)} стиль</h2></div>
+        ${quadSvg(att)}
+        <p class="note">${esc(att.text)}</p>
+      </div>
+
+      <div class="tile">
+        <div class="head"><span class="eyebrow">III · Сценарии</span><h2>${active.length ? `${active.length} из 11 откликнулось` : "Сценарии не звучат"}</h2></div>
+        ${active.length ? `<div>${active.slice(0, 5).map(t => `<div class="trap"><i class="dot ${t.level === 2 ? "s" : "m"}"></i><b>${esc(t.title)}</b><p>${esc(t.text)}</p></div>`).join("")}</div>
+          <p class="note">● звучит ярко &nbsp; ○ проявляется иногда${active.length > 5 ? ` · ещё ${active.length - 5} в разговоре` : ""}</p>`
+          : `<p class="note">Ни один из одиннадцати сценариев не откликнулся заметно — интересно обсудить, на что вы опираетесь.</p>`}
+      </div>
+
+      <div class="tile">
+        <div class="head"><span class="eyebrow">IV · Ресурс</span><h2>Ресурс ${esc(res.word)}</h2></div>
+        <div class="ring">${ringSvg(res.pct)}<p class="note">${res.pct <= 28 ? "Сил сейчас очень мало. Это важный сигнал — стоит позаботиться о себе и не откладывать разговор." : res.pct <= 50 ? "Сил меньше, чем обычно хотелось бы. Стоит посмотреть, что их забирает." : "Вам есть на что опереться: хватает энергии, интереса и отдыха."}</p></div>
+      </div>
+
+      <div class="tile">
+        <div class="head"><span class="eyebrow">V · Состояние</span><h2>${st.moodFlag || st.anxFlag ? "Есть на что обратить внимание" : "В пределах обычного"}</h2></div>
+        <div class="meter"><div class="row"><span>Настроение</span><span>${esc(st.mood)}</span></div><div class="gauge"><i style="left:${(st.moodPos * 100).toFixed(0)}%"></i></div></div>
+        <div class="meter"><div class="row"><span>Тревога</span><span>${esc(st.anx)}</span></div><div class="gauge"><i style="left:${(st.anxPos * 100).toFixed(0)}%"></i></div></div>
+        ${st.parts ? `<div class="stack g8" style="padding-top:12px;border-top:1px solid var(--line)"><span class="eyebrow">Из чего складывается тревога</span>
+          ${st.parts.map(x => `<div class="sc ${x.pct >= 50 ? "hi" : ""}" style="grid-template-columns:minmax(0,11em) 1fr 2.6em"><span>${esc(x.title)}</span><div class="track"><div style="width:${x.pct}%"></div></div><span class="v">${x.pct}%</span></div>`).join("")}</div>` : ""}
+        <p class="note">За последние две недели. Это короткий скрининг, а не диагноз.</p>
+      </div>
+    </div>
+
+    <section class="stack g16">
+      <span class="eyebrow">Для разговора</span><h2>Что мне было бы интересно обсудить</h2>
+      <ul class="qs">${questions.map(q => `<li>${esc(q)}</li>`).join("")}</ul>
+    </section>
+
+    <section class="invite">
+      <span class="eyebrow">Сессия знакомства · бесплатно</span>
+      <h2 style="color:var(--card)">Давайте разберём ваш профиль вместе</h2>
+      <p class="voice">${n}, профиль — это карта, а не территория. Самое интересное начинается, когда мы смотрим, как эти грани живут именно в вашей жизни. Приглашаю вас на бесплатную сессию знакомства.</p>
+      <ul class="agenda">
+        <li><b>Разберём профиль</b>что в нём откликнулось, а что нет</li>
+        <li><b>Найдём главное</b>какая тема для вас сейчас самая живая</li>
+        <li><b>Решим, что дальше</b>нужна ли работа и в каком формате</li>
+      </ul>
+      <div class="qrrow">
+        <div class="qr">${document.getElementById("qr-tpl").innerHTML}</div>
+        <div class="stack g8"><span class="handle">@uhanovv</span><span style="font-size:14px;color:#b7c6bf">Наведите камеру телефона или нажмите кнопку ниже</span></div>
+      </div>
+      <div class="invite-actions">
+        <a class="btn" data-write href="${TG}" target="_blank" rel="noopener">Написать Виктору в Telegram</a>
+        <button class="btn ghost-light" data-send type="button">Отправить PDF профиля</button>
+      </div>
+      <span style="font-size:13px;color:#b7c6bf">Откроется личный чат с Виктором, а ваш профиль уже будет в сообщении — останется нажать «Отправить». <a href="o-viktore.html" style="color:var(--card)">Подробнее обо мне</a></span>
+    </section>
+
+    <div class="actions" data-html2canvas-ignore>
+      <button class="btn ghost" id="copy">Скопировать профиль для Виктора</button>
+      <button class="btn ghost" id="pdf">Скачать PDF</button>
+      <button class="link" id="again">Пройти заново</button>
+    </div>
+
+    <footer>«Пять граней» — авторский экспресс-формат Виктора Уханова. Характер — авторская экспресс-методика по мотивам типологии К. Леонгарда и опросника Г. Шмишека; отношения — по опроснику ECR-RS (R. C. Fraley); сценарии — по опроснику жизненных ловушек (J. Young, J. Klosko, 1993; пер. Е. Кваши); ресурс — индекс благополучия WHO-5; состояние — PHQ-4 и PHQ-9; составляющие тревоги — экспресс-версия по мотивам Интегративного теста тревожности (А. П. Бизюк, Л. И. Вассерман, Б. В. Иовлев, НИПНИ им. Бехтерева), группировка утверждений авторская. Результаты носят ознакомительный характер и не являются медицинским заключением. Ответы хранятся только в этом браузере. <a href="privacy.html" target="_blank" rel="noopener">Политика обработки персональных данных</a>.</footer>
+  `;
+  $("#result").hidden = false; window.scrollTo(0, 0);
+
+  const lines = [
+    `Виктор, здравствуйте! Это ${S.name}, я ${G("прошёл", "прошла")} «Пять граней».`,
+    `Архетип: ${lead.map(x => x.arch).join(", ")}.`,
+    `Привязанность: ${att.name.toLowerCase()} стиль.`,
+    `Сценарии: ${active.length ? active.map(t => t.title + (t.level === 2 ? " (ярко)" : "")).join(", ") : "не откликнулись"}.`,
+    `Ресурс: ${res.pct}%. Настроение: ${st.mood}, тревога: ${st.anx}${st.parts ? ` (больше всего — ${st.parts[0].title.toLowerCase()})` : ""}.`,
+    "Хочу записаться на сессию знакомства.",
+  ];
+  const summary = lines.join("\n");
+  const summaryPdf = summary + "\nМой профиль — в приложенном PDF.";
+  const tgLink = `${TG}?text=${encodeURIComponent(summary)}`;
+
+  $("#copy").addEventListener("click", () => copyText(summary, "Скопировано. Вставьте в сообщение Виктору"));
+  $("#pdf").addEventListener("click", async e => {
+    const btn = e.currentTarget, label = btn.textContent;
+    btn.disabled = true; btn.textContent = "Готовлю PDF…";
+    try { const f = await makePdf(); downloadFile(f); toast("PDF сохранён в загрузки"); }
+    catch (err) { toast("Не получилось собрать PDF. Попробуйте ещё раз"); }
+    btn.disabled = false; btn.textContent = label;
+  });
+
+  // Закреплённая панель
+  document.querySelector(".dock")?.remove();
+  const dock = document.createElement("div");
+  dock.className = "dock"; dock.setAttribute("data-html2canvas-ignore", "");
+  dock.innerHTML = `<div class="dock-in">
+    <div class="mono sm">ВУ</div>
+    <div class="dock-text"><b>Сессия знакомства · бесплатно</b><span>Отправьте профиль Виктору — разберём его вместе</span></div>
+    ${st.crisis ? '<a class="sos" href="tel:88002000122">Телефон доверия</a>' : ""}
+    <button class="btn ghost pdf-btn" data-send type="button" aria-label="Отправить PDF профиля" title="Отправить PDF профиля">PDF</button>
+    <a class="btn" data-write href="${TG}" target="_blank" rel="noopener"><span class="long">Написать Виктору в Telegram</span><span class="short">Написать Виктору</span></a>
+  </div>`;
+  document.body.append(dock); document.body.classList.add("has-dock");
+  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summaryPdf)));
+  // Главная кнопка: сразу личный чат с Виктором с готовым текстом профиля.
+  // Текст дополнительно копируется — на случай, если приложение Telegram не подставит его само.
+  document.querySelectorAll("[data-write]").forEach(a => {
+    a.href = tgLink;
+    a.addEventListener("click", () => { try { navigator.clipboard?.writeText(summary).catch(() => {}); } catch (e) {} });
+  });
+  $("#again").addEventListener("click", () => { try { localStorage.removeItem(STORE); } catch (e) {} location.reload(); });
+}
+/* ============ PDF и отправка ============ */
+const LIBS = [
+  "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
+  "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+];
+const loadScript = src => new Promise((ok, fail) => {
+  if (document.querySelector(`script[src="${src}"]`)) return ok();
+  const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = fail; document.head.append(el);
+});
+let pdfCache = null;
+async function makePdf() {
+  if (pdfCache) return pdfCache;
+  for (const src of LIBS) await loadScript(src);
+  const node = $("#result");
+  const canvas = await window.html2canvas(node, { scale: Math.min(2, window.devicePixelRatio || 1.5), backgroundColor: "#f2f0eb", useCORS: true });
+  const pdf = new window.jspdf.jsPDF({ unit: "mm", format: "a4", compress: true });
+  const pageW = 210, pageH = 297, margin = 10, w = pageW - margin * 2;
+  const pxPerMm = canvas.width / w, sliceH = Math.floor((pageH - margin * 2) * pxPerMm);
+  for (let y = 0, page = 0; y < canvas.height; y += sliceH, page++) {
+    const part = document.createElement("canvas");
+    part.width = canvas.width; part.height = Math.min(sliceH, canvas.height - y);
+    const ctx = part.getContext("2d");
+    ctx.fillStyle = "#f2f0eb"; ctx.fillRect(0, 0, part.width, part.height);
+    ctx.drawImage(canvas, 0, y, canvas.width, part.height, 0, 0, canvas.width, part.height);
+    if (page) pdf.addPage();
+    pdf.setFillColor(242, 240, 235); pdf.rect(0, 0, pageW, pageH, "F");
+    pdf.addImage(part.toDataURL("image/jpeg", 0.88), "JPEG", margin, margin, w, part.height / pxPerMm);
+  }
+  pdfCache = new File([pdf.output("blob")], `Пять граней — ${S.name}.pdf`, { type: "application/pdf" });
+  return pdfCache;
+}
+const TR = { а:"a",б:"b",в:"v",г:"g",д:"d",е:"e",ё:"e",ж:"zh",з:"z",и:"i",й:"y",к:"k",л:"l",м:"m",н:"n",о:"o",п:"p",р:"r",с:"s",т:"t",у:"u",ф:"f",х:"h",ц:"ts",ч:"ch",ш:"sh",щ:"sch",ъ:"",ы:"y",ь:"",э:"e",ю:"yu",я:"ya" };
+const asciiName = () => "pyat-granej-" + ([...S.name.toLowerCase()].map(c => TR[c] ?? c).join("").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "profile") + ".pdf";
+function downloadFile(file) {
+  // Браузеры теряют не-латинские имена при скачивании, поэтому имя файла — латиницей.
+  const url = URL.createObjectURL(file), a = document.createElement("a");
+  a.href = url; a.download = asciiName(); document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+async function copyText(text, msg) {
+  try { await navigator.clipboard.writeText(text); if (msg) toast(msg); return true; }
+  catch (e) { prompt("Скопируйте текст:", text); return false; }
+}
+async function sendToViktor(btn, summary) {
+  const label = btn.innerHTML;
+  btn.disabled = true; btn.textContent = "Готовлю PDF…";
+  let file = null;
+  try { file = await makePdf(); } catch (e) { file = null; }
+  btn.disabled = false; btn.innerHTML = label;
+  const canShare = file && navigator.canShare && navigator.canShare({ files: [file] });
+  openSheet(file, summary, canShare);
+}
+function openSheet(file, summary, canShare) {
+  document.querySelector(".sheet-bg")?.remove();
+  const bg = document.createElement("div");
+  bg.className = "sheet-bg"; bg.setAttribute("data-html2canvas-ignore", "");
+  const fileRow = file ? `<div class="file"><i>PDF</i><div class="stack"><b>${esc(file.name)}</b><span class="muted">${Math.max(1, Math.round(file.size / 1024))} КБ · ваш профиль</span></div></div>` : "";
+  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="Отправить профиль Виктору">
+    <span class="eyebrow">Сессия знакомства</span>
+    <h3>Отправьте профиль Виктору</h3>
+    ${fileRow}
+    ${canShare
+      ? `<p class="muted small">Нажмите «Отправить», выберите Telegram и чат с Виктором (@uhanovv). Файл и сообщение уйдут вместе.</p>
+         <button class="btn" id="share">Отправить в Telegram</button>`
+      : `<ol>
+           <li>${file ? "PDF с профилем сохранён в загрузки." : "PDF собрать не удалось — отправьте текст профиля."}</li>
+           <li>Откройте чат с Виктором и вставьте сообщение — оно уже скопировано.</li>
+           ${file ? "<li>Прикрепите файл скрепкой или перетащите его в чат.</li>" : ""}
+         </ol>
+         <a class="btn" href="${TG}" target="_blank" rel="noopener" id="open-tg">Открыть чат с Виктором</a>`}
+    <button class="link" id="close">Закрыть</button>
+  </div>`;
+  document.body.append(bg);
+  const close = () => bg.remove();
+  bg.addEventListener("click", e => { if (e.target === bg) close(); });
+  $("#close").addEventListener("click", close);
+  if (canShare) {
+    $("#share").addEventListener("click", async () => {
+      try { await navigator.share({ files: [file], title: "Пять граней", text: summary }); close(); toast("Спасибо! Виктор ответит в Telegram"); }
+      catch (e) { if (e.name !== "AbortError") { downloadFile(file); copyText(summary); toast("PDF сохранён, текст скопирован"); } }
+    });
+  } else {
+    if (file) downloadFile(file);
+    copyText(summary);
+  }
+}
+
+function toast(t) { const el = $("#toast"); el.textContent = t; el.hidden = false; setTimeout(() => (el.hidden = true), 2600); }
+</script>
+</body>
+</html>
