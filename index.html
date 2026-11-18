@@ -53,6 +53,8 @@ nav { display: flex; gap: 26px; font-size: 14px; }
 nav a { text-decoration: none; color: var(--muted); }
 nav a:hover { color: var(--ink); }
 .bar .btn { padding: 13px 20px; font-size: 14px; }
+.bar .short { display: none; }
+@media (max-width: 420px) { .bar .long { display: none; } .bar .short { display: inline; } }
 @media (max-width: 860px) { nav { display: none; } }
 @media (max-width: 420px) { .brand b { display: none; } }
 
@@ -195,7 +197,7 @@ footer .in { display: flex; justify-content: space-between; gap: 16px; flex-wrap
   <div class="in bar">
     <a class="brand" href="#top"><span class="mono">ВУ</span><b>Виктор Уханов</b></a>
     <nav aria-label="Разделы"><a href="#approach">Подход</a><a href="#topics">С чем работаю</a><a href="#education">Образование</a><a href="#media">В медиа</a><a href="chekap.html">Экспресс-чекап</a></nav>
-    <a class="btn" href="https://t.me/uhanovv" target="_blank" rel="noopener">Записаться</a>
+    <a class="btn" href="https://t.me/uhanovv" target="_blank" rel="noopener"><span class="long">Написать в Telegram</span><span class="short">Написать</span></a>
   </div>
 </header>
 
