@@ -909,7 +909,7 @@ function showResult() {
   </div>`;
   document.body.append(dock); document.body.classList.add("has-dock");
   const tgLinkPdf = `${TG}?text=${encodeURIComponent(summaryPdf)}`;
-  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summaryPdf, tgLinkPdf)));
+  document.querySelectorAll("[data-send]").forEach(b => b.addEventListener("click", () => sendToViktor(b, summaryPdf, tgLinkPdf, tgLink)));
   // Главная кнопка: сразу личный чат с Виктором с готовым текстом профиля.
   // Текст дополнительно копируется — на случай, если приложение Telegram не подставит его само.
   document.querySelectorAll("[data-write]").forEach(a => {
@@ -951,17 +951,46 @@ async function makePdf() {
 }
 const TR = { а:"a",б:"b",в:"v",г:"g",д:"d",е:"e",ё:"e",ж:"zh",з:"z",и:"i",й:"y",к:"k",л:"l",м:"m",н:"n",о:"o",п:"p",р:"r",с:"s",т:"t",у:"u",ф:"f",х:"h",ц:"ts",ч:"ch",ш:"sh",щ:"sch",ъ:"",ы:"y",ь:"",э:"e",ю:"yu",я:"ya" };
 const asciiName = () => "pyat-granej-" + ([...S.name.toLowerCase()].map(c => TR[c] ?? c).join("").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "profile") + ".pdf";
+const UA = navigator.userAgent;
+const IS_IOS = /iP(hone|ad|od)/.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+// Встроенные браузеры мессенджеров и соцсетей не умеют скачивать файлы.
+const IN_APP = !!window.TelegramWebviewProxy || /Telegram|Instagram|FBAN|FBAV|VKClient|; wv\)/i.test(UA);
 function downloadFile(file) {
-  // Браузеры теряют не-латинские имена при скачивании, поэтому имя файла — латиницей.
-  const url = URL.createObjectURL(file), a = document.createElement("a");
-  a.href = url; a.download = asciiName(); document.body.append(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  const url = URL.createObjectURL(file);
+  if (IS_IOS) {
+    // iOS не поддерживает скачивание по ссылке и открыл бы PDF на месте сайта — открываем его в новой вкладке.
+    if (!window.open(url, "_blank")) toast("Разрешите всплывающие окна, чтобы открыть PDF");
+  } else {
+    // Браузеры теряют не-латинские имена при скачивании, поэтому имя файла — латиницей.
+    const a = document.createElement("a");
+    a.href = url; a.download = asciiName(); a.target = "_blank"; a.rel = "noopener";
+    document.body.append(a); a.click(); a.remove();
+  }
+  // Ссылку на файл не удаляем сразу: иначе открытая вкладка с PDF превратится в ошибку.
+  setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
+}
+// Во встроенном браузере вместо PDF предлагаем отправить профиль текстом.
+function openInAppNote(tgLink) {
+  document.querySelector(".sheet-bg")?.remove();
+  const bg = document.createElement("div");
+  bg.className = "sheet-bg"; bg.setAttribute("data-html2canvas-ignore", "");
+  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="PDF профиля">
+    <span class="eyebrow">PDF профиля</span>
+    <h3>Здесь PDF не скачать</h3>
+    <p class="muted small">Встроенный браузер Telegram не умеет сохранять файлы. Отправьте Виктору профиль сообщением — весь результат уже вписан в текст. А чтобы получить PDF, откройте эту страницу в Safari или Chrome: меню «⋯» → «Открыть в браузере».</p>
+    <a class="btn" href="${tgLink}" target="_blank" rel="noopener">Написать Виктору</a>
+    <button class="link" id="close" type="button">Закрыть</button>
+  </div>`;
+  document.body.append(bg);
+  bg.addEventListener("click", e => { if (e.target === bg) bg.remove(); });
+  $("#close").addEventListener("click", () => bg.remove());
 }
 async function copyText(text, msg) {
   try { await navigator.clipboard.writeText(text); if (msg) toast(msg); return true; }
   catch (e) { prompt("Скопируйте текст:", text); return false; }
 }
-async function sendToViktor(btn, summary, tgLinkPdf) {
+async function sendToViktor(btn, summary, tgLinkPdf, tgLink) {
+  if (IN_APP) { openInAppNote(tgLink); return; }
   const label = btn.innerHTML;
   btn.disabled = true; btn.textContent = "Готовлю…";
   let file = null;
