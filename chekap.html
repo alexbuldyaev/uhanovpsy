@@ -278,19 +278,12 @@ body.has-dock { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
       <p class="voice lead-voice">Несколько минут — и вы получите свой профиль: архетип, стиль привязанности, жизненные сценарии и ресурс.</p>
     </div>
     <div class="start-card" id="start-card">
-      <div class="field">
-        <label id="g-label">Как к вам обращаться в вопросах?</label>
-        <div class="seg" role="group" aria-labelledby="g-label">
-          <button type="button" id="g-f" data-g="f" aria-pressed="false">Женский род</button>
-          <button type="button" id="g-m" data-g="m" aria-pressed="false">Мужской род</button>
-        </div>
-      </div>
       <label class="consent" for="consent">
         <input type="checkbox" id="consent">
         <span>Согласен(-на) на обработку персональных данных, включая сведения о здоровье, по 152-ФЗ и <a href="privacy.html" target="_blank" rel="noopener">политике конфиденциальности</a></span>
       </label>
       <button class="btn" id="start" disabled>Начать чекап</button>
-      <p class="start-hint" id="start-hint">Выберите обращение и отметьте согласие</p>
+      <p class="start-hint" id="start-hint">Отметьте согласие, чтобы начать</p>
       <button class="link" id="resume" hidden></button>
     </div>
   </div>
@@ -578,8 +571,8 @@ function scoreState() {
 const startEl = $("#start");
 const consentEl = $("#consent");
 const syncStart = () => {
-  startEl.disabled = !(S.g && consentEl.checked);
-  $("#start-hint").textContent = !S.g && !consentEl.checked ? "Выберите обращение и отметьте согласие" : !S.g ? "Выберите, как к вам обращаться" : !consentEl.checked ? "Отметьте согласие, чтобы начать" : "";
+  startEl.disabled = !consentEl.checked;
+  $("#start-hint").textContent = consentEl.checked ? "" : "Отметьте согласие, чтобы начать";
 };
 consentEl.addEventListener("change", syncStart);
 // Кнопки «Начать чекап» ниже описания: поднимают к форме старта.
@@ -588,28 +581,25 @@ document.querySelectorAll("[data-to-start]").forEach(b => b.addEventListener("cl
   const card = $("#start-card");
   card.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
   card.classList.remove("flash"); void card.offsetWidth; card.classList.add("flash");
-  setTimeout(() => (S.g ? (consentEl.checked ? startEl : consentEl) : $("#g-f")).focus({ preventScroll: true }), reduce ? 0 : 450);
+  setTimeout(() => (consentEl.checked ? startEl : consentEl).focus({ preventScroll: true }), reduce ? 0 : 450);
 }));
 // Закреплённая кнопка на телефоне — пока форма старта не видна.
 const sticky = document.querySelector(".sticky-start");
 if ("IntersectionObserver" in window) {
-  let formVisible = true, introVisible = true;
-  const upd = () => { sticky.hidden = formVisible || !introVisible || $("#intro").hidden; };
+  let formVisible = true, introVisible = true, bottomVisible = false;
+  const upd = () => { sticky.hidden = formVisible || bottomVisible || !introVisible || $("#intro").hidden; };
+  new IntersectionObserver(es => { bottomVisible = es[0].isIntersecting; upd(); }).observe(document.querySelector(".frame > .btn"));
   new IntersectionObserver(es => { formVisible = es[0].isIntersecting; upd(); }).observe($("#start-card"));
   new IntersectionObserver(es => { introVisible = es[0].isIntersecting; upd(); }).observe($("#intro"));
 }
-document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
-  S.g = b.dataset.g;
-  document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x === b));
-  syncStart();
-}));
+
 startEl.addEventListener("click", () => {
-  S = { name: "", g: S.g, stage: 0, ans: {}, hist: {}, flags: {}, done: false };
+  S = { name: "", g: "", stage: 0, ans: {}, hist: {}, flags: {}, done: false };
   sticky.hidden = true;
   save(); goal("chekap_start"); begin(false);
 });
 const saved = load();
-if (saved && saved.g && Object.keys(saved.ans || {}).length) {
+if (saved && Object.keys(saved.ans || {}).length) {
   const r = $("#resume");
   r.hidden = false;
   r.textContent = saved.done ? "Открыть мой профиль" : "Продолжить с места, где остановились";
@@ -635,6 +625,13 @@ function choose(label) {
   return new Promise(res => {
     chips.innerHTML = `<button class="btn">${esc(label)}</button>`;
     chips.firstElementChild.addEventListener("click", () => { chips.innerHTML = ""; me(label); res(); });
+    scrollDown(chips);
+  });
+}
+function chooseOne(labels) {
+  return new Promise(res => {
+    chips.innerHTML = labels.map((l, i) => `<button class="btn ${i ? "ghost" : ""}" data-i="${i}">${esc(l)}</button>`).join("");
+    chips.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { chips.innerHTML = ""; me(labels[b.dataset.i]); res(+b.dataset.i); }));
     scrollDown(chips);
   });
 }
@@ -675,7 +672,10 @@ async function begin(resumed) {
   const n = esc(S.name);
   if (!resumed) {
     await say("Рад знакомству.", .6);
-    await say("Впереди пять граней. После каждой я буду рядом, а в конце соберу ваш личный профиль.");
+    await say("Как мне к вам обращаться в вопросах?");
+    S.g = (await chooseOne(["В женском роде", "В мужском роде"])) === 0 ? "f" : "m";
+    save(); goal("gender_set");
+    await say("Спасибо. Впереди пять граней. После каждой я буду рядом, а в конце соберу ваш личный профиль.");
   } else {
     await say(`С возвращением. Продолжим с того места, где вы остановились.`);
   }
