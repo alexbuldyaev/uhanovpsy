@@ -648,7 +648,6 @@ const INTRO = [
 ];
 
 async function outro(i) {
-  const n = esc(S.name);
   if (i === 0) {
     const top = scoreChar()[0];
     note(`Грань I из V открыта · ${top.tag}`);
@@ -669,7 +668,6 @@ async function outro(i) {
 
 async function begin(resumed) {
   $("#intro").hidden = true; $("#chat").hidden = false; steps(); window.scrollTo(0, 0);
-  const n = esc(S.name);
   if (!resumed) {
     await say("Рад знакомству.", .6);
     await say("Как мне к вам обращаться в вопросах?");
@@ -867,7 +865,6 @@ function showResult() {
   $("#intro").hidden = true; $("#chat").hidden = true; $("#wrap").classList.add("wide");
   const P = profile();
   const { ch, att, traps, res, st, strong, active } = P;
-  const n = esc(S.name);
   const today = new Date().toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
   const tags = [...(strong.length ? strong : ch).slice(0, 3).map(x => x.tag), att.tag, res.low ? "#нужна_пауза" : "#есть_ресурс"];
   const questions = [...active.slice(0, 2).map(t => t.ask), att.ask];
